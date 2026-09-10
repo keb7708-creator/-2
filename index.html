@@ -4826,6 +4826,57 @@ button,
 }
 </style>
 
+
+<style>
+@media(max-width:640px){
+  .loot-selected-panel{
+    scroll-margin-top:78px !important;
+    border:2px solid #f3cbd7 !important;
+    background:#fffdfd !important;
+  }
+
+  .loot-selected-panel .loot-panel-title{
+    position:sticky !important;
+    top:58px !important;
+    z-index:3 !important;
+    margin:-10px -10px 8px !important;
+    padding:10px 10px 8px !important;
+    background:#fff7fa !important;
+    border-bottom:1px solid #f3dce3 !important;
+    border-radius:12px 12px 0 0 !important;
+  }
+
+  .loot-selected-preview{
+    min-height:82px !important;
+    border:2px solid #f2c8d5 !important;
+    background:linear-gradient(180deg,#fff3f7,#fff9fb) !important;
+  }
+
+  .loot-selected-preview:not(.empty){
+    box-shadow:0 4px 12px rgba(220,91,126,.10) !important;
+  }
+
+  .loot-selected-preview:not(.empty) b{
+    color:#d94d75 !important;
+    font-size:14px !important;
+  }
+
+  .boss-drop-choice.active{
+    border:2px solid #f0527d !important;
+    background:#fff0f5 !important;
+    box-shadow:0 3px 10px rgba(224,83,122,.10) !important;
+  }
+
+  .boss-drop-choice.active .choice-main b{
+    color:#d94b73 !important;
+  }
+
+  .boss-drop-choice.active .choice-check{
+    transform:scale(1.08);
+  }
+}
+</style>
+
 </head>
 
 <body>
@@ -5269,7 +5320,7 @@ button,
         <strong>🍂 선택한 아이템</strong>
       </div>
 
-      <div id="lootSelectedPreview" class="loot-selected-preview empty">
+      <div id="lootSelectedPreview" class="loot-selected-preview empty" aria-live="polite">
         왼쪽에서 아이템을 선택해 주세요.
       </div>
 
@@ -6732,9 +6783,7 @@ function cycle(cid,bid){
   b.status=becomingDone?'done':'todo';
   save();
   render();
-  if(becomingDone){
-    setTimeout(()=>openBossLoot(cid,bid,true),80);
-  }
+
 }
 
 function injectLootButtons(){
@@ -6890,6 +6939,17 @@ function selectBossDropItem(name){
   lootSelectedName=name;
   renderBossDropChoices();
   renderLootSelectedPreview();
+
+  // 모바일에서는 선택한 아이템 영역이 아래쪽에 있기 때문에
+  // 선택 즉시 해당 영역이 보이도록 자동 이동
+  if(window.matchMedia('(max-width:640px)').matches){
+    requestAnimationFrame(()=>{
+      const panel=document.querySelector('.loot-selected-panel');
+      if(panel){
+        panel.scrollIntoView({behavior:'smooth', block:'start'});
+      }
+    });
+  }
 }
 
 function renderLootSelectedPreview(){
