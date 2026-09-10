@@ -6207,6 +6207,74 @@ button,
 }
 </style>
 
+
+<style>
+/* ===== PC 웹 상단 메뉴 겹침 수정 ===== */
+@media(min-width:641px){
+  .primary-tabs{
+    position:relative !important;
+    z-index:2 !important;
+    display:grid !important;
+    grid-template-columns:1fr 1fr !important;
+    gap:10px !important;
+    width:100% !important;
+    margin:14px 0 0 !important;
+    padding:0 22px !important;
+    transform:none !important;
+  }
+
+  .primary-tab{
+    position:relative !important;
+    width:100% !important;
+    min-width:0 !important;
+    height:48px !important;
+    margin:0 !important;
+    transform:none !important;
+    border-radius:18px !important;
+  }
+
+  /* 기존 4개 메뉴는 메인 탭 아래에 별도 한 줄로 배치 */
+  #homeView .top-nav{
+    position:relative !important;
+    z-index:1 !important;
+    display:grid !important;
+    grid-template-columns:repeat(4,minmax(0,1fr)) !important;
+    gap:10px !important;
+    width:100% !important;
+    margin:10px 0 0 !important;
+    padding:0 22px 18px !important;
+    transform:none !important;
+    top:auto !important;
+    left:auto !important;
+    right:auto !important;
+    bottom:auto !important;
+    overflow:visible !important;
+  }
+
+  #homeView .top-nav .nav-pill{
+    position:relative !important;
+    width:100% !important;
+    min-width:0 !important;
+    height:48px !important;
+    min-height:48px !important;
+    margin:0 !important;
+    padding:0 10px !important;
+    transform:none !important;
+    top:auto !important;
+    left:auto !important;
+    right:auto !important;
+    bottom:auto !important;
+    border-radius:18px !important;
+    white-space:nowrap !important;
+  }
+
+  /* 상단 메뉴 아래 본문과도 여백 확보 */
+  #homeView .content{
+    margin-top:4px !important;
+  }
+}
+</style>
+
 </head>
 
 <body>
