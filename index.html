@@ -8143,7 +8143,10 @@ function getAllSelectableItemsInline(){
     Object.values(BOSS_DROP_RECOMMEND).flat().forEach(x=>x && set.add(x));
   }
 
-  return [...set].sort((a,b)=>a.localeCompare(b,'ko'));
+  // 실제 아이콘 이미지가 등록된 아이템만 전체 선택 목록에 표시
+  return [...set]
+    .filter(name => !!itemIconUrl(name))
+    .sort((a,b)=>a.localeCompare(b,'ko'));
 }
 
 function toggleInlineAllItemList(){
