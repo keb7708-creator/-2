@@ -5462,6 +5462,180 @@ button,
 }
 </style>
 
+
+<style>
+/* ===== 전체 아이템 목록 표시 깨짐 수정 ===== */
+
+/* 기존 .inline-all-item-option span 공통 규칙이
+   아이콘+이름 래퍼까지 22px 원형으로 만들어 글자가 잘리던 문제 수정 */
+.inline-all-item-option .inline-item-main{
+  width:auto !important;
+  height:auto !important;
+  min-width:0 !important;
+  flex:1 1 auto !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:flex-start !important;
+  gap:10px !important;
+  padding:0 !important;
+  margin:0 !important;
+  border-radius:0 !important;
+  background:transparent !important;
+  color:inherit !important;
+  overflow:visible !important;
+}
+
+.inline-all-item-option .inline-item-main b{
+  display:block !important;
+  width:auto !important;
+  min-width:0 !important;
+  flex:1 1 auto !important;
+  white-space:normal !important;
+  word-break:keep-all !important;
+  overflow-wrap:anywhere !important;
+  line-height:1.35 !important;
+  color:#253044 !important;
+  font-size:12px !important;
+  text-align:left !important;
+}
+
+/* 우측 + / 체크 버튼에만 원형 스타일 적용 */
+.inline-all-item-option > span:last-child{
+  width:24px !important;
+  height:24px !important;
+  flex:0 0 24px !important;
+  display:grid !important;
+  place-items:center !important;
+  border-radius:50% !important;
+  background:#fff0f4 !important;
+  color:#d55979 !important;
+  font-weight:900 !important;
+}
+
+.inline-all-item-option{
+  min-height:58px !important;
+  padding:8px 10px !important;
+  overflow:visible !important;
+}
+
+.inline-all-item-option .loot-item-icon{
+  width:46px !important;
+  height:46px !important;
+  flex:0 0 46px !important;
+  object-fit:contain !important;
+  object-position:center !important;
+  display:block !important;
+  background:transparent !important;
+}
+
+/* 보스별 드랍 목록도 같은 방식으로 이름과 아이콘이 한 줄에 제대로 표시 */
+.boss-drop-choice .choice-with-icon{
+  width:auto !important;
+  min-width:0 !important;
+  flex:1 1 auto !important;
+  display:flex !important;
+  align-items:center !important;
+  gap:10px !important;
+  overflow:visible !important;
+}
+.boss-drop-choice .choice-main{
+  display:block !important;
+  min-width:0 !important;
+  flex:1 1 auto !important;
+  overflow:visible !important;
+}
+.boss-drop-choice .choice-main b{
+  display:block !important;
+  white-space:normal !important;
+  word-break:keep-all !important;
+  overflow-wrap:anywhere !important;
+  font-size:12px !important;
+  line-height:1.35 !important;
+}
+.boss-drop-choice .choice-main small{
+  display:block !important;
+  margin-top:3px !important;
+  white-space:normal !important;
+}
+.boss-drop-choice .loot-item-icon{
+  width:46px !important;
+  height:46px !important;
+  flex:0 0 46px !important;
+}
+
+/* 선택한 아이템 미리보기 */
+.selected-preview-row{
+  width:100% !important;
+}
+.selected-preview-row > div{
+  min-width:0 !important;
+  flex:1 1 auto !important;
+}
+.selected-preview-row b{
+  display:block !important;
+  white-space:normal !important;
+  word-break:keep-all !important;
+  overflow-wrap:anywhere !important;
+}
+
+/* 등록목록/정산목록 */
+.draft-item-main,
+.settlement-item-with-icon{
+  min-width:0 !important;
+  width:100% !important;
+}
+.draft-item-main > div,
+.settlement-item-with-icon > div{
+  min-width:0 !important;
+  flex:1 1 auto !important;
+}
+.draft-item-main b,
+.settlement-item-with-icon strong{
+  white-space:normal !important;
+  word-break:keep-all !important;
+  overflow-wrap:anywhere !important;
+}
+
+/* 이미지가 없는 항목은 잘못된 잘림 이미지 대신 깔끔한 기본 아이콘 */
+.loot-item-icon-fallback{
+  width:46px !important;
+  height:46px !important;
+  flex:0 0 46px !important;
+  display:grid !important;
+  place-items:center !important;
+  border-radius:10px !important;
+  background:#fff4f7 !important;
+  font-size:22px !important;
+}
+
+@media(max-width:640px){
+  .inline-all-item-list{
+    max-height:360px !important;
+  }
+
+  .inline-all-item-option{
+    min-height:62px !important;
+    padding:8px 10px !important;
+  }
+
+  .inline-all-item-option .loot-item-icon,
+  .boss-drop-choice .loot-item-icon{
+    width:48px !important;
+    height:48px !important;
+    flex:0 0 48px !important;
+  }
+
+  .inline-all-item-option .inline-item-main b,
+  .boss-drop-choice .choice-main b{
+    font-size:13px !important;
+  }
+
+  .inline-all-item-option .inline-item-main{
+    gap:11px !important;
+  }
+}
+</style>
+
 </head>
 
 <body>
