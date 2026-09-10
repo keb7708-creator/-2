@@ -5834,6 +5834,368 @@ button,
 }
 </style>
 
+
+<style>
+/* ===== 드랍 등록 UI - 첨부 시안 스타일 ===== */
+.loot-v2{
+  width:min(1040px,calc(100vw - 40px)) !important;
+  max-height:92vh !important;
+  border-radius:18px !important;
+  background:#fffdfd !important;
+  overflow:auto !important;
+  box-shadow:0 24px 70px rgba(34,28,38,.30) !important;
+}
+
+.loot-v2 .loot-dialog-head{
+  padding:18px 22px 16px !important;
+  background:linear-gradient(180deg,#fff6fb,#fffafd) !important;
+  border-bottom:1px solid #f3dce6 !important;
+}
+.loot-title-icon{
+  width:54px !important;
+  height:54px !important;
+  border-radius:16px !important;
+  background:#fff !important;
+  font-size:26px !important;
+}
+.loot-v2 .loot-dialog-head h3{
+  font-size:26px !important;
+  font-weight:1000 !important;
+  color:#182440 !important;
+}
+.loot-v2 .loot-dialog-head .sub{
+  font-size:13px !important;
+  color:#8e8390 !important;
+}
+.loot-close-btn{
+  width:38px !important;
+  height:38px !important;
+  background:#fff3f7 !important;
+  color:#d3597c !important;
+}
+
+.loot-context-grid{
+  grid-template-columns:1.1fr 1.15fr .7fr .8fr !important;
+  gap:12px !important;
+  padding:18px 22px 6px !important;
+}
+.loot-context-box{
+  min-height:68px !important;
+  padding:10px 12px !important;
+  border:1px solid #dfe3ea !important;
+  border-radius:10px !important;
+  background:#fff !important;
+}
+.loot-context-box > span{
+  font-size:11px !important;
+  color:#26334f !important;
+  font-weight:1000 !important;
+}
+.context-value-row{
+  display:flex !important;
+  justify-content:space-between !important;
+  align-items:center !important;
+  gap:8px !important;
+  margin-top:7px !important;
+}
+.context-value-row b{
+  font-size:14px !important;
+  color:#1f2a43 !important;
+}
+.context-value-row span{
+  color:#223049 !important;
+}
+.party-stepper{
+  display:grid !important;
+  grid-template-columns:28px 1fr 28px !important;
+  align-items:center !important;
+  gap:4px !important;
+  margin-top:6px !important;
+}
+.party-stepper button{
+  height:30px !important;
+  border:0 !important;
+  border-radius:9px !important;
+  background:#f5f7fb !important;
+  color:#22304b !important;
+  font-weight:900 !important;
+}
+.party-stepper b{
+  text-align:center !important;
+  font-size:14px !important;
+}
+
+.loot-picker-layout{
+  grid-template-columns:42% 58% !important;
+  gap:14px !important;
+  padding:14px 22px 12px !important;
+}
+.loot-available-panel,
+.loot-selected-panel{
+  border:1px solid #f0cad8 !important;
+  border-radius:16px !important;
+  background:#fff !important;
+  padding:14px !important;
+}
+.loot-panel-title strong{
+  font-size:16px !important;
+  color:#162442 !important;
+}
+.loot-panel-title span{
+  color:#ef4e7c !important;
+  font-size:12px !important;
+  font-weight:1000 !important;
+}
+.boss-drop-search-wrap{
+  margin-bottom:10px !important;
+}
+.boss-drop-search-wrap input{
+  width:100% !important;
+  height:38px !important;
+  border:1px solid #dfe4ec !important;
+  border-radius:10px !important;
+  padding:0 12px !important;
+  background:#fff !important;
+  font-size:12px !important;
+}
+
+.boss-drop-choices{
+  max-height:470px !important;
+  overflow-y:auto !important;
+  padding-right:2px !important;
+}
+.boss-drop-choice{
+  min-height:68px !important;
+  border:1px solid #dfe3ea !important;
+  border-radius:11px !important;
+  background:#fff !important;
+  margin-bottom:8px !important;
+  padding:8px 10px !important;
+}
+.boss-drop-choice.active{
+  border:2px solid #ff4f84 !important;
+  background:#fff6f9 !important;
+}
+.boss-drop-choice .choice-with-icon{
+  grid-template-columns:58px minmax(0,1fr) !important;
+  gap:12px !important;
+}
+.boss-drop-choice .loot-item-icon{
+  width:56px !important;
+  height:56px !important;
+  object-fit:contain !important;
+  border-radius:8px !important;
+}
+.boss-drop-choice .choice-main b{
+  font-size:14px !important;
+  font-weight:1000 !important;
+  color:#162440 !important;
+}
+.boss-drop-choice.active .choice-main b{
+  color:#ef3e74 !important;
+}
+.boss-drop-choice .choice-main small{
+  color:#7d8799 !important;
+  font-size:11px !important;
+}
+.boss-drop-choice .choice-check{
+  width:28px !important;
+  height:28px !important;
+  background:#f04d7c !important;
+  color:#fff !important;
+}
+
+.loot-selected-preview{
+  min-height:150px !important;
+  justify-content:flex-start !important;
+  padding:16px !important;
+  background:linear-gradient(180deg,#fff6fa,#fff1f6) !important;
+  border:1px solid #f4c8d7 !important;
+  border-radius:14px !important;
+}
+.selected-preview-row{
+  grid-template-columns:72px minmax(0,1fr) !important;
+  gap:14px !important;
+}
+.selected-preview-row .loot-item-icon{
+  width:70px !important;
+  height:70px !important;
+}
+.selected-preview-row b{
+  font-size:17px !important;
+  color:#192640 !important;
+}
+.selected-preview-row small{
+  font-size:12px !important;
+  color:#7c8290 !important;
+}
+
+.loot-all-item-wrap{
+  margin-top:10px !important;
+}
+.loot-all-item-toggle{
+  min-height:38px !important;
+  border:1px dashed #efc3d1 !important;
+  background:#fff8fa !important;
+  color:#c35475 !important;
+}
+
+.loot-editor-grid{
+  margin-top:14px !important;
+  grid-template-columns:1fr 1fr !important;
+  gap:10px !important;
+}
+.loot-editor-grid span,
+.loot-price-field span{
+  font-size:12px !important;
+  color:#1f2a43 !important;
+  font-weight:1000 !important;
+}
+.loot-editor-grid input,
+.loot-editor-grid select,
+.loot-price-field input{
+  height:42px !important;
+  border:1px solid #dfe3ea !important;
+  border-radius:10px !important;
+  background:#fff !important;
+}
+.loot-my-share{
+  margin-top:11px !important;
+  min-height:46px !important;
+  background:#f4f6f8 !important;
+  border:1px solid #e0e5ea !important;
+}
+.loot-my-share b{
+  font-size:15px !important;
+  color:#ef4778 !important;
+}
+.loot-add-selected-btn{
+  width:58% !important;
+  min-width:260px !important;
+  margin:16px auto 0 !important;
+  display:block !important;
+  height:46px !important;
+  border-radius:999px !important;
+  font-size:15px !important;
+}
+
+.loot-register-list{
+  margin:0 22px 14px !important;
+  border:1px solid #f0cad8 !important;
+  border-radius:15px !important;
+}
+.loot-register-head{
+  padding:12px 14px !important;
+  background:#fff7fa !important;
+}
+.loot-register-head strong{
+  font-size:14px !important;
+  color:#17243f !important;
+}
+.loot-draft-empty{
+  min-height:96px !important;
+  display:grid !important;
+  place-items:center !important;
+  background:#fff !important;
+}
+
+.loot-v2 .loot-note-field{
+  margin:0 22px 14px !important;
+}
+.loot-v2 .loot-dialog-actions{
+  grid-template-columns:1fr 1.05fr !important;
+  gap:12px !important;
+  padding:0 22px 20px !important;
+  background:#fff !important;
+}
+.loot-dialog-actions button{
+  height:54px !important;
+  border-radius:12px !important;
+  font-size:16px !important;
+}
+.loot-dialog-actions .primary{
+  background:linear-gradient(180deg,#f4517e,#eb2f6c) !important;
+}
+
+/* 모바일 */
+@media(max-width:640px){
+  .loot-v2{
+    width:calc(100vw - 10px) !important;
+    max-height:95vh !important;
+    border-radius:18px !important;
+  }
+  .loot-v2 .loot-dialog-head{
+    padding:12px 12px 10px !important;
+  }
+  .loot-title-icon{
+    width:40px !important;
+    height:40px !important;
+    font-size:20px !important;
+  }
+  .loot-v2 .loot-dialog-head h3{
+    font-size:20px !important;
+  }
+  .loot-context-grid{
+    grid-template-columns:1fr 1fr !important;
+    padding:10px 10px 2px !important;
+    gap:8px !important;
+  }
+  .loot-picker-layout{
+    display:flex !important;
+    flex-direction:column !important;
+    padding:10px !important;
+    gap:10px !important;
+  }
+  .loot-available-panel,
+  .loot-selected-panel{
+    padding:10px !important;
+  }
+  .boss-drop-choices{
+    max-height:300px !important;
+  }
+  .boss-drop-choice{
+    min-height:64px !important;
+  }
+  .boss-drop-choice .choice-with-icon{
+    grid-template-columns:52px minmax(0,1fr) !important;
+  }
+  .boss-drop-choice .loot-item-icon{
+    width:50px !important;
+    height:50px !important;
+  }
+  .boss-drop-choice .choice-main b{
+    font-size:13px !important;
+  }
+  .loot-selected-preview{
+    min-height:110px !important;
+  }
+  .selected-preview-row{
+    grid-template-columns:58px minmax(0,1fr) !important;
+  }
+  .selected-preview-row .loot-item-icon{
+    width:56px !important;
+    height:56px !important;
+  }
+  .loot-add-selected-btn{
+    width:100% !important;
+    min-width:0 !important;
+  }
+  .loot-register-list{
+    margin:0 10px 10px !important;
+  }
+  .loot-v2 .loot-note-field{
+    margin:0 10px 10px !important;
+  }
+  .loot-v2 .loot-dialog-actions{
+    padding:10px calc(10px + env(safe-area-inset-right)) calc(10px + env(safe-area-inset-bottom)) calc(10px + env(safe-area-inset-left)) !important;
+    position:sticky !important;
+    bottom:0 !important;
+    z-index:8 !important;
+    background:#fff !important;
+  }
+}
+</style>
+
 </head>
 
 <body>
@@ -6247,19 +6609,19 @@ button,
   <div class="loot-context-grid">
     <div class="loot-context-box">
       <span>캐릭터</span>
-      <b id="lootCharName">-</b>
+      <div class="context-value-row"><b id="lootCharName">-</b><span>⌄</span></div>
     </div>
     <div class="loot-context-box">
       <span>보스</span>
-      <b id="lootBossName">-</b>
+      <div class="context-value-row"><b id="lootBossName">-</b><span>⌄</span></div>
     </div>
     <div class="loot-context-box">
       <span>난이도</span>
-      <b id="lootBossDifficulty">-</b>
+      <div class="context-value-row"><b id="lootBossDifficulty">-</b><span>⌄</span></div>
     </div>
     <div class="loot-context-box">
       <span>파티 인원</span>
-      <b id="lootPartySize">1인</b>
+      <div class="party-stepper"><button type="button" onclick="adjustLootParty(-1)">−</button><b id="lootPartySize">1인</b><button type="button" onclick="adjustLootParty(1)">＋</button></div>
     </div>
   </div>
 
@@ -6268,6 +6630,9 @@ button,
       <div class="loot-panel-title">
         <strong>🍁 드랍 가능 아이템</strong>
         <span id="lootAvailableLabel"></span>
+      </div>
+      <div class="boss-drop-search-wrap">
+        <input id="bossDropSearchInput" type="search" placeholder="아이템명 검색..." oninput="renderBossDropChoices()">
       </div>
       <div id="bossDropChoices" class="boss-drop-choices"></div>
     </section>
@@ -6283,7 +6648,7 @@ button,
 
       <div class="loot-all-item-wrap">
         <button id="inlineAllItemToggle" class="loot-all-item-toggle" type="button" onclick="toggleInlineAllItemList()">
-          📦 전체 아이템 목록에서 선택
+          ＋ 전체 아이템 목록 보기
         </button>
 
         <div id="inlineAllItemPanel" class="inline-all-item-panel" hidden>
@@ -6325,7 +6690,7 @@ button,
   <section class="loot-register-list">
     <div class="loot-register-head">
       <strong>🍄 등록할 아이템 목록 (<span id="lootDraftCount">0</span>개)</strong>
-      <button type="button" onclick="clearLootDrafts()">전체 삭제</button>
+      <button type="button" onclick="clearLootDrafts()">선택 삭제</button>
     </div>
     <div id="lootDraftList" class="loot-draft-list"></div>
   </section>
@@ -8367,7 +8732,7 @@ function toggleInlineAllItemList(){
     });
   }else{
     panel.setAttribute('hidden','');
-    if(btn)btn.textContent='📦 전체 아이템 목록에서 선택';
+    if(btn)btn.textContent='＋ 전체 아이템 목록 보기';
   }
 }
 
@@ -8415,10 +8780,23 @@ openBossLoot = function(cid,bid,fromCompletion=false){
   const panel=document.getElementById('inlineAllItemPanel');
   const btn=document.getElementById('inlineAllItemToggle');
   if(panel)panel.setAttribute('hidden','');
-  if(btn)btn.textContent='📦 전체 아이템 목록에서 선택';
+  if(btn)btn.textContent='＋ 전체 아이템 목록 보기';
 
   return result;
 };
+</script>
+
+
+<script>
+function adjustLootParty(delta){
+  const {b}=typeof getActiveLootContext==='function' ? getActiveLootContext() : {};
+  if(!b)return;
+  const next=Math.max(1,Math.min(6,(Number(b.partySize)||1)+delta));
+  b.partySize=next;
+  const el=document.getElementById('lootPartySize');
+  if(el)el.textContent=`${next}인`;
+  if(typeof updateLootMyShare==='function')updateLootMyShare();
+}
 </script>
 
 </body>
