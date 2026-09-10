@@ -4392,6 +4392,28 @@ button,
 }
 </style>
 
+
+<style>
+/* 드랍 아이템 직접 입력 대신 선택형 */
+.boss-loot-row .loot-name{
+  appearance:auto;
+  -webkit-appearance:menulist;
+  font-weight:800;
+  color:#514843;
+  background:#fffaf8;
+}
+.boss-loot-row .loot-name:invalid,
+.boss-loot-row .loot-name option[value=""]{
+  color:#9b8d84;
+}
+@media(max-width:640px){
+  .boss-loot-row .loot-name{
+    min-width:0;
+    font-size:12px;
+  }
+}
+</style>
+
 </head>
 
 <body>
@@ -4799,7 +4821,7 @@ button,
   </div>
 
   <div class="loot-help">
-    보스에서 획득한 아이템을 개별로 등록해 주세요.<br>
+    보스에서 획득한 아이템을 목록에서 선택해 주세요.<br>
     판매 전에는 <b>미판매</b>, 판매 후에는 금액을 입력하고 <b>판매완료</b>로 변경하면 정산에 자동 반영돼요.
   </div>
 
@@ -6021,6 +6043,75 @@ render();
 let pendingBossLoot=null;
 let lootFilter='all';
 
+/* 드랍 아이템 선택 목록 */
+const DROP_ITEM_CATALOG = [
+  '루즈 컨트롤 머신 마크',
+  '마력이 깃든 안대',
+  '몽환의 벨트',
+  '커맨더 포스 이어링',
+  '고통의 근원',
+  '거대한 공포',
+  '창세의 뱃지',
+  '저주받은 적의 마도서',
+  '저주받은 청의 마도서',
+  '저주받은 녹의 마도서',
+  '저주받은 황의 마도서',
+  '가디언 엔젤 링',
+  '트와일라이트 마크',
+  '에스텔라 이어링',
+  '데이브레이크 펜던트',
+  '아케인셰이드 무기 상자',
+  '아케인셰이드 방어구 상자',
+  '에테르넬 장비 상자',
+  '태초의 정수',
+  '강력한 환생의 불꽃',
+  '영원한 환생의 불꽃',
+  '놀라운 긍정의 혼돈 주문서 60%',
+  '검은 환생의 불꽃',
+  '꺼지지 않는 불꽃',
+  '보스 소울 조각',
+  '기타 보스 보상'
+];
+
+const BOSS_DROP_RECOMMEND = {
+  '스우':['루즈 컨트롤 머신 마크','아케인셰이드 무기 상자','아케인셰이드 방어구 상자'],
+  '데미안':['마력이 깃든 안대','아케인셰이드 무기 상자','아케인셰이드 방어구 상자'],
+  '가디언 엔젤 슬라임':['가디언 엔젤 링'],
+  '루시드':['몽환의 벨트','아케인셰이드 무기 상자','아케인셰이드 방어구 상자'],
+  '윌':['저주받은 적의 마도서','저주받은 청의 마도서','저주받은 녹의 마도서','저주받은 황의 마도서','아케인셰이드 무기 상자','아케인셰이드 방어구 상자'],
+  '더스크':['거대한 공포'],
+  '듄켈':['커맨더 포스 이어링'],
+  '진 힐라':['고통의 근원'],
+  '검은 마법사':['창세의 뱃지'],
+  '선택받은 세렌':['에테르넬 장비 상자'],
+  '감시자 칼로스':['에테르넬 장비 상자'],
+  '카링':['에테르넬 장비 상자'],
+  '벨로나':['에테르넬 장비 상자'],
+  '찬란한 흉성':['에테르넬 장비 상자'],
+  '림보':['에테르넬 장비 상자'],
+  '최초의 대적자':['에테르넬 장비 상자'],
+  '발드릭스':['에테르넬 장비 상자'],
+  '유피테르':['에테르넬 장비 상자']
+};
+
+function dropItemOptionsForBoss(bossName, current=''){
+  const recommended=BOSS_DROP_RECOMMEND[bossName]||[];
+  const ordered=[...recommended, ...DROP_ITEM_CATALOG.filter(x=>!recommended.includes(x))];
+  if(current && !ordered.includes(current)) ordered.unshift(current);
+
+  const recOptions=recommended.length
+    ? `<optgroup label="⭐ ${escapeHtml(bossName)} 추천">`+
+      recommended.map(name=>`<option value="${escapeHtml(name)}" ${name===current?'selected':''}>${escapeHtml(name)}</option>`).join('')+
+      `</optgroup>`
+    : '';
+
+  const allOptions=`<optgroup label="🎁 전체 아이템">`+
+    ordered.filter(x=>!recommended.includes(x)).map(name=>`<option value="${escapeHtml(name)}" ${name===current?'selected':''}>${escapeHtml(name)}</option>`).join('')+
+    `</optgroup>`;
+
+  return `<option value="">아이템 선택</option>${recOptions}${allOptions}`;
+}
+
 function ensureLootRecords(b){
   if(!Array.isArray(b.lootRecords)){
     b.lootRecords=[];
@@ -6045,7 +6136,12 @@ function addBossLootRow(item){
   row.dataset.id=item?.id||safeUUID();
   row.innerHTML=`
     <div class="loot-row-top">
-      <input class="loot-name" placeholder="아이템명" value="${escapeHtml(item?.name||'')}">
+      <select class="loot-name" aria-label="아이템 선택">
+        ${dropItemOptionsForBoss(
+          data.chars.find(x=>x.id===pendingBossLoot?.cid)?.bosses?.find(x=>x.id===pendingBossLoot?.bid)?.name || '',
+          item?.name||''
+        )}
+      </select>
       <input class="loot-qty" type="number" min="1" value="${Math.max(1,Number(item?.qty)||1)}" aria-label="수량">
       <button class="loot-remove-row" type="button" onclick="this.closest('.boss-loot-row').remove()">×</button>
     </div>
