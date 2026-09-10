@@ -4220,6 +4220,48 @@ button,
 }
 </style>
 
+
+<style>
+/* Made in KKING signature */
+.kking-signature{
+  width:100%;
+  padding:18px 12px 22px;
+  text-align:center;
+  background:#fffaf5;
+}
+.kking-signature-inner{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:8px 18px;
+  border:1px solid #f1d7df;
+  border-radius:999px;
+  background:linear-gradient(180deg,#fffdfd,#fff3f7);
+  color:#d76585;
+  font-size:12px;
+  font-weight:900;
+  letter-spacing:1.2px;
+  box-shadow:0 3px 10px rgba(221,119,148,.10);
+}
+.kking-signature-inner::before,
+.kking-signature-inner::after{
+  content:"✦";
+  color:#f1a3b8;
+  font-size:10px;
+}
+.kking-signature b{
+  color:#b84f72;
+  letter-spacing:1.5px;
+}
+@media(max-width:640px){
+  .kking-signature{padding:14px 10px 20px}
+  .kking-signature-inner{
+    font-size:11px;
+    padding:7px 15px;
+  }
+}
+</style>
+
 </head>
 
 <body>
@@ -5701,6 +5743,12 @@ function addLookedUpCharacter(){
     bosses:makeWeeklyBosses(),
     monthlyBosses:makeMonthlyBosses()
   };
+  // 새 캐릭터는 주간 보스를 하나도 자동 선택하지 않습니다.
+  (nc.bosses || []).forEach(b => {
+    b.selected = false;
+    b.status = 'todo';
+    b.time = '';
+  });
   data.chars.push(nc);
   activeCharId=nc.id;
   save();
@@ -5794,6 +5842,11 @@ function setMainTab(tab){
 
 render();
 </script>
+
+<div class="kking-signature" aria-label="Made in KKING">
+  <div class="kking-signature-inner">Made in <b>KKING</b></div>
+</div>
+
 </body>
 
 </html>
