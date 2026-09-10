@@ -4477,6 +4477,355 @@ button,
 }
 </style>
 
+
+<style>
+/* ===== 모바일 드랍 아이템 UI 최적화 ===== */
+@media(max-width:640px){
+
+  /* 모달 자체 */
+  .loot-v2{
+    width:calc(100vw - 8px) !important;
+    max-width:none !important;
+    max-height:96vh !important;
+    margin:0 auto !important;
+    border-radius:16px !important;
+  }
+
+  .loot-v2 .loot-dialog-head{
+    padding:12px 12px 10px !important;
+  }
+
+  .loot-title-wrap{
+    gap:8px !important;
+  }
+
+  .loot-title-icon{
+    width:36px !important;
+    height:36px !important;
+    font-size:19px !important;
+    border-radius:12px !important;
+  }
+
+  .loot-v2 .loot-dialog-head h3{
+    font-size:18px !important;
+  }
+
+  .loot-v2 .loot-dialog-head .sub{
+    font-size:10px !important;
+    line-height:1.35 !important;
+  }
+
+  .loot-close-btn{
+    width:32px !important;
+    height:32px !important;
+    font-size:20px !important;
+    flex:0 0 32px !important;
+  }
+
+  /* 캐릭터/보스/난이도/파티정보 */
+  .loot-context-grid{
+    grid-template-columns:1fr 1fr !important;
+    gap:7px !important;
+    padding:10px 10px 0 !important;
+  }
+
+  .loot-context-box{
+    padding:9px 10px !important;
+    min-width:0 !important;
+  }
+
+  .loot-context-box span{
+    font-size:9px !important;
+  }
+
+  .loot-context-box b{
+    font-size:12px !important;
+  }
+
+  /* 좌/우 2단 → 모바일 1단 */
+  .loot-picker-layout{
+    display:flex !important;
+    flex-direction:column !important;
+    gap:10px !important;
+    padding:10px !important;
+  }
+
+  .loot-available-panel,
+  .loot-selected-panel{
+    width:100% !important;
+    padding:10px !important;
+    border-radius:14px !important;
+  }
+
+  .loot-panel-title{
+    margin-bottom:8px !important;
+  }
+
+  .loot-panel-title strong{
+    font-size:12px !important;
+  }
+
+  .loot-panel-title span{
+    font-size:9px !important;
+  }
+
+  /* 드랍 아이템 목록 */
+  .boss-drop-choices{
+    max-height:none !important;
+    overflow:visible !important;
+    gap:6px !important;
+  }
+
+  .boss-drop-choice{
+    min-height:52px !important;
+    padding:9px 10px !important;
+    border-radius:11px !important;
+    gap:8px !important;
+  }
+
+  .boss-drop-choice .choice-main b{
+    font-size:12px !important;
+    line-height:1.3 !important;
+    white-space:normal !important;
+    word-break:keep-all !important;
+  }
+
+  .boss-drop-choice .choice-main small{
+    font-size:9px !important;
+    line-height:1.25 !important;
+  }
+
+  .boss-drop-choice .choice-check{
+    width:22px !important;
+    height:22px !important;
+    flex:0 0 22px !important;
+  }
+
+  /* 선택한 아이템 */
+  .loot-selected-preview{
+    min-height:68px !important;
+    padding:10px !important;
+    border-radius:12px !important;
+  }
+
+  .loot-selected-preview b{
+    font-size:13px !important;
+  }
+
+  .loot-selected-preview small{
+    font-size:9px !important;
+  }
+
+  /* 수량/판매상태 */
+  .loot-editor-grid{
+    grid-template-columns:1fr 1fr !important;
+    gap:7px !important;
+  }
+
+  .loot-editor-grid span,
+  .loot-price-field span{
+    font-size:9px !important;
+  }
+
+  .loot-editor-grid input,
+  .loot-editor-grid select,
+  .loot-price-field input{
+    height:38px !important;
+    font-size:12px !important;
+    padding:0 8px !important;
+  }
+
+  .loot-my-share{
+    padding:9px 10px !important;
+  }
+
+  .loot-my-share span{
+    font-size:9px !important;
+  }
+
+  .loot-my-share b{
+    font-size:12px !important;
+  }
+
+  .loot-add-selected-btn{
+    height:40px !important;
+    font-size:12px !important;
+  }
+
+  /* 등록 아이템 목록 */
+  .loot-register-list{
+    margin:0 10px 10px !important;
+    border-radius:14px !important;
+  }
+
+  .loot-register-head{
+    padding:9px 10px !important;
+  }
+
+  .loot-register-head strong{
+    font-size:11px !important;
+  }
+
+  .loot-register-head button{
+    font-size:9px !important;
+    padding:4px 8px !important;
+  }
+
+  .loot-draft-list{
+    padding:8px !important;
+    gap:6px !important;
+  }
+
+  .loot-draft-item{
+    grid-template-columns:minmax(0,1fr) auto 28px !important;
+    padding:8px !important;
+    gap:6px !important;
+  }
+
+  .loot-draft-item b{
+    font-size:11px !important;
+    white-space:normal !important;
+    word-break:keep-all !important;
+  }
+
+  .loot-draft-item small,
+  .loot-draft-item .draft-money{
+    font-size:9px !important;
+  }
+
+  .loot-draft-empty{
+    padding:20px 8px !important;
+    font-size:10px !important;
+  }
+
+  /* 메모 / 하단 버튼 */
+  .loot-v2 .loot-note-field{
+    margin:0 10px 9px !important;
+  }
+
+  .loot-note-field span{
+    font-size:10px !important;
+  }
+
+  .loot-note-field input{
+    height:38px !important;
+    font-size:11px !important;
+  }
+
+  .loot-v2 .loot-dialog-actions{
+    position:sticky !important;
+    bottom:0 !important;
+    z-index:6 !important;
+    padding:9px 10px calc(10px + env(safe-area-inset-bottom)) !important;
+    background:linear-gradient(180deg,rgba(255,250,248,.92),#fffaf8 30%) !important;
+    margin-top:0 !important;
+  }
+
+  .loot-dialog-actions button{
+    height:42px !important;
+    font-size:12px !important;
+  }
+
+  /* 정산 탭 모바일 */
+  .settlement-view{
+    padding:0 10px 20px !important;
+  }
+
+  .settlement-panel{
+    padding:14px 10px !important;
+    border-radius:16px !important;
+  }
+
+  .loot-settlement-summary{
+    grid-template-columns:1fr 1fr !important;
+    gap:7px !important;
+    margin:12px 0 !important;
+  }
+
+  .loot-summary-card{
+    padding:10px !important;
+  }
+
+  .loot-summary-card span{
+    font-size:9px !important;
+  }
+
+  .loot-summary-card b{
+    font-size:13px !important;
+  }
+
+  .loot-summary-card.accent{
+    grid-column:1/-1 !important;
+  }
+
+  .settlement-filter-row{
+    gap:5px !important;
+    overflow-x:auto !important;
+    padding-bottom:2px !important;
+  }
+
+  .settlement-filter{
+    flex:0 0 auto !important;
+    height:31px !important;
+    font-size:10px !important;
+    padding:0 11px !important;
+  }
+
+  .settlement-boss-head{
+    padding:10px 11px !important;
+  }
+
+  .settlement-boss-head strong{
+    font-size:11px !important;
+  }
+
+  .settlement-boss-head span{
+    font-size:9px !important;
+  }
+
+  .settlement-item{
+    grid-template-columns:minmax(0,1fr) auto !important;
+    padding:9px 11px !important;
+  }
+
+  .settlement-item-main strong{
+    font-size:11px !important;
+    line-height:1.35 !important;
+  }
+
+  .settlement-item-main small{
+    font-size:9px !important;
+  }
+
+  .settlement-item-money b{
+    font-size:11px !important;
+  }
+
+  .settlement-item-money small{
+    font-size:9px !important;
+  }
+}
+
+/* 아주 작은 화면 */
+@media(max-width:390px){
+  .loot-context-grid{
+    grid-template-columns:1fr 1fr !important;
+  }
+
+  .loot-editor-grid{
+    grid-template-columns:1fr !important;
+  }
+
+  .loot-summary-card{
+    min-width:0 !important;
+  }
+
+  .boss-drop-choice .choice-main b{
+    font-size:11px !important;
+  }
+}
+</style>
+
 </head>
 
 <body>
