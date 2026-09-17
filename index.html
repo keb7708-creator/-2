@@ -7034,6 +7034,574 @@ button,
 }
 </style>
 
+
+<style>
+/* =========================================================
+   MOBILE ONLY FINAL OVERRIDE
+   데스크톱 레이아웃은 유지하고 760px 이하에서만 적용
+   ========================================================= */
+@media (max-width:760px){
+
+  html{
+    -webkit-text-size-adjust:100%;
+    text-size-adjust:100%;
+    overflow-x:hidden !important;
+  }
+
+  body{
+    width:100% !important;
+    min-width:0 !important;
+    margin:0 !important;
+    overflow-x:hidden !important;
+    background:#fffaf7 !important;
+  }
+
+  *,*::before,*::after{
+    box-sizing:border-box !important;
+  }
+
+  button,input,select,textarea{
+    font-size:16px; /* iOS 입력 시 자동 확대 방지 */
+  }
+
+  /* 전체 프레임 */
+  .page-shell,
+  .app,
+  .container,
+  .wrap,
+  .content,
+  main{
+    width:100% !important;
+    max-width:100% !important;
+    min-width:0 !important;
+    margin-left:0 !important;
+    margin-right:0 !important;
+  }
+
+  .page-shell{
+    border-radius:0 !important;
+    box-shadow:none !important;
+    overflow:visible !important;
+  }
+
+  /* 제목 */
+  .hero{
+    width:calc(100% - 16px) !important;
+    height:auto !important;
+    min-height:116px !important;
+    margin:8px !important;
+    padding:10px 8px !important;
+    border-radius:18px !important;
+  }
+
+  .hero-title-fancy{
+    padding:0 42px !important;
+  }
+
+  .hero-title-fancy > img:not(.title-pinkbean-decor){
+    max-width:100% !important;
+    height:auto !important;
+  }
+
+  .title-pinkbean-decor,
+  .hero-mushroom,
+  .hero-slime{
+    transform:scale(.78);
+    transform-origin:center;
+  }
+
+  /* 메인 3개 탭: 항상 한 줄 */
+  .primary-tabs{
+    position:sticky !important;
+    top:0 !important;
+    z-index:80 !important;
+    display:grid !important;
+    grid-template-columns:repeat(3,minmax(0,1fr)) !important;
+    gap:6px !important;
+    width:100% !important;
+    padding:8px !important;
+    margin:0 !important;
+    background:rgba(255,250,247,.94) !important;
+    backdrop-filter:blur(10px);
+  }
+
+  .primary-tab{
+    width:100% !important;
+    min-width:0 !important;
+    min-height:44px !important;
+    height:44px !important;
+    padding:0 5px !important;
+    border-radius:14px !important;
+    font-size:12px !important;
+    white-space:nowrap !important;
+  }
+
+  /* 홈 안 서브 메뉴 */
+  #homeView .top-nav,
+  .top-nav{
+    display:grid !important;
+    grid-template-columns:repeat(3,minmax(0,1fr)) !important;
+    gap:6px !important;
+    width:100% !important;
+    padding:6px 8px 8px !important;
+    margin:0 !important;
+  }
+
+  .top-nav button,
+  .top-nav .nav-btn{
+    min-width:0 !important;
+    min-height:42px !important;
+    height:auto !important;
+    padding:8px 4px !important;
+    font-size:11px !important;
+    border-radius:13px !important;
+    white-space:nowrap !important;
+  }
+
+  /* 섹션 여백 */
+  .home-view,
+  #homeView,
+  .settlement-view,
+  .schedule-view{
+    width:100% !important;
+    padding-left:8px !important;
+    padding-right:8px !important;
+  }
+
+  .section-heading{
+    margin:12px 2px 9px !important;
+    align-items:flex-end !important;
+  }
+
+  .section-heading h2{
+    font-size:19px !important;
+  }
+
+  .mini-avatar{
+    width:34px !important;
+    height:34px !important;
+  }
+
+  /* 현재 캐릭터 + 안내 말풍선 */
+  .active-label-wrap{
+    max-width:48% !important;
+    justify-content:flex-end !important;
+  }
+
+  .active-label{
+    font-size:18px !important;
+    white-space:nowrap !important;
+  }
+
+  .active-character-bubble{
+    right:0 !important;
+    width:170px !important;
+    max-width:65vw !important;
+    font-size:10px !important;
+    line-height:1.35 !important;
+    padding:7px 9px !important;
+  }
+
+  /* 캐릭터 카드: 세로로 길게 늘리지 않고 가로 스와이프 */
+  .character-strip{
+    display:flex !important;
+    gap:8px !important;
+    width:100% !important;
+    margin:0 0 14px !important;
+    padding:2px 2px 10px !important;
+    overflow-x:auto !important;
+    overflow-y:hidden !important;
+    scroll-snap-type:x mandatory;
+    -webkit-overflow-scrolling:touch;
+    scrollbar-width:none;
+  }
+  .character-strip::-webkit-scrollbar{display:none}
+
+  .character-card,
+  .character-card:not(.add-character),
+  .character-card.add-character{
+    flex:0 0 156px !important;
+    width:156px !important;
+    min-width:156px !important;
+    max-width:156px !important;
+    height:266px !important;
+    min-height:266px !important;
+    padding:9px 8px !important;
+    border-radius:17px !important;
+    scroll-snap-align:start;
+  }
+
+  .character-card:not(.add-character) .char-image-btn{
+    width:102px !important;
+    height:108px !important;
+    min-height:108px !important;
+    flex-basis:108px !important;
+    margin:2px auto 0 !important;
+  }
+
+  .character-card:not(.add-character) .char-image-btn img{
+    width:102px !important;
+    height:108px !important;
+    transform:translateY(-5px) scale(2.7) !important;
+    transform-origin:center bottom !important;
+  }
+
+  .character-copy{
+    width:100% !important;
+    gap:3px !important;
+  }
+
+  .character-copy strong{
+    font-size:14px !important;
+  }
+
+  .character-copy small{
+    font-size:9px !important;
+    line-height:1.25 !important;
+  }
+
+  /* 수익/패널 */
+  .main-panel,
+  .panel,
+  .boss-panel,
+  .monthly-panel,
+  .schedule-panel,
+  .quick-panel,
+  .settlement-panel,
+  .calendar-panel{
+    width:100% !important;
+    max-width:100% !important;
+    min-width:0 !important;
+    border-radius:18px !important;
+  }
+
+  .boss-panel,
+  .monthly-panel{
+    padding:12px 9px !important;
+  }
+
+  .boss-panel-head{
+    gap:8px !important;
+    align-items:flex-start !important;
+  }
+
+  .panel-title span{font-size:13px !important}
+  .panel-title strong{font-size:18px !important}
+  .profit-box span{font-size:10px !important}
+  .profit-box strong{font-size:19px !important}
+
+  /* 보스 카드 */
+  .boss-grid{
+    display:grid !important;
+    grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+    gap:7px !important;
+    width:100% !important;
+  }
+
+  .boss-card{
+    min-width:0 !important;
+    min-height:142px !important;
+    padding:8px !important;
+    border-radius:13px !important;
+  }
+
+  .boss-emblem{
+    width:36px !important;
+    height:36px !important;
+    flex-basis:36px !important;
+  }
+
+  .boss-main strong{font-size:11px !important}
+  .boss-price{font-size:10px !important}
+
+  .boss-controls{
+    display:grid !important;
+    grid-template-columns:1fr 1fr !important;
+    gap:5px !important;
+    margin-top:7px !important;
+  }
+
+  .boss-controls select,
+  .boss-controls button{
+    width:100% !important;
+    min-width:0 !important;
+    min-height:36px !important;
+    height:36px !important;
+    padding:0 4px !important;
+    font-size:10px !important;
+  }
+
+  .boss-card .loot-open-btn,
+  .loot-open-btn{
+    min-height:36px !important;
+    font-size:10px !important;
+  }
+
+  .partner-field,
+  .boss-partner-row{
+    width:100% !important;
+  }
+
+  /* 빠른 메뉴 */
+  .quick-grid{
+    grid-template-columns:1fr 1fr !important;
+    gap:7px !important;
+  }
+
+  .quick-grid button{
+    min-height:44px !important;
+    padding:8px 5px !important;
+    font-size:10px !important;
+  }
+
+  /* 정산 */
+  .settlement-view{
+    padding-top:8px !important;
+    padding-bottom:24px !important;
+  }
+
+  .settlement-panel{
+    padding:14px 10px !important;
+  }
+
+  .settlement-heading{
+    align-items:flex-start !important;
+  }
+
+  .settlement-heading h2{
+    font-size:20px !important;
+  }
+
+  .settlement-summary,
+  .settlement-stats{
+    grid-template-columns:1fr !important;
+    gap:7px !important;
+  }
+
+  .settlement-character-tabs{
+    display:flex !important;
+    gap:6px !important;
+    overflow-x:auto !important;
+    padding-bottom:5px !important;
+    scrollbar-width:none;
+  }
+  .settlement-character-tabs::-webkit-scrollbar{display:none}
+
+  .settlement-character-tab{
+    flex:0 0 auto !important;
+    min-height:38px !important;
+    font-size:10px !important;
+  }
+
+  .settlement-item{
+    grid-template-columns:minmax(0,1fr) auto !important;
+    gap:7px !important;
+    padding:10px 8px !important;
+  }
+
+  .settlement-item-with-icon{
+    gap:7px !important;
+  }
+
+  .settlement-item-with-icon img{
+    width:42px !important;
+    height:42px !important;
+    flex:0 0 42px !important;
+  }
+
+  .settlement-item-main strong{font-size:11px !important}
+  .settlement-item-main small{font-size:9px !important}
+  .settlement-item-money{min-width:60px !important}
+  .settlement-item-money b{font-size:11px !important}
+
+  .settlement-partner-payments{
+    display:flex !important;
+    flex-direction:column !important;
+    align-items:stretch !important;
+    gap:4px !important;
+  }
+
+  .partner-payment-check{
+    width:100% !important;
+    min-width:0 !important;
+    padding:5px 7px !important;
+  }
+
+  /* 일정 달력은 가로폭 안에서 유지 */
+  .schedule-view{
+    padding-top:8px !important;
+    padding-bottom:24px !important;
+  }
+
+  .calendar-panel{
+    padding:11px 7px !important;
+  }
+
+  .calendar-title-row{
+    gap:6px !important;
+  }
+
+  .calendar-title-row .panel-heading{
+    font-size:17px !important;
+  }
+
+  .calendar-nav{
+    gap:4px !important;
+  }
+
+  .calendar-nav strong{
+    min-width:68px !important;
+    font-size:12px !important;
+  }
+
+  .calendar-nav button{
+    width:28px !important;
+    height:28px !important;
+  }
+
+  .calendar-weekdays,
+  .schedule-calendar{
+    gap:2px !important;
+  }
+
+  .calendar-weekdays span{
+    padding:4px 0 !important;
+    font-size:9px !important;
+  }
+
+  .calendar-day{
+    min-width:0 !important;
+    min-height:62px !important;
+    padding:3px !important;
+    border-radius:8px !important;
+  }
+
+  .calendar-day-number{
+    width:19px !important;
+    height:19px !important;
+    font-size:9px !important;
+  }
+
+  .calendar-event,
+  .calendar-event-main{
+    font-size:7px !important;
+    line-height:1.2 !important;
+    padding:2px !important;
+    border-radius:5px !important;
+  }
+
+  /* 선택 모달 / 정산 모달 */
+  dialog,
+  .modal,
+  .dialog-panel{
+    width:calc(100vw - 12px) !important;
+    max-width:calc(100vw - 12px) !important;
+    max-height:92dvh !important;
+    margin:auto !important;
+    padding:12px !important;
+    border-radius:18px !important;
+    overflow:auto !important;
+    overscroll-behavior:contain;
+  }
+
+  dialog .row,
+  .modal .row,
+  .sale-form-grid,
+  .loot-context-grid{
+    grid-template-columns:1fr !important;
+  }
+
+  dialog input,
+  dialog select,
+  dialog textarea,
+  dialog button{
+    min-height:42px !important;
+  }
+
+  /* 주간 보스 선택창 */
+  .boss-select-list,
+  .weekly-boss-list,
+  .boss-picker-list{
+    width:100% !important;
+    max-width:100% !important;
+  }
+
+  .boss-select-row,
+  .weekly-boss-row,
+  .boss-picker-row{
+    min-width:0 !important;
+  }
+
+  /* 하단 장식은 모바일에서 화면을 가리지 않도록 */
+  .speech,
+  .cheer-sticker,
+  .schedule-sticker,
+  .quick-snail,
+  .quick-danger,
+  .profit-sticker{
+    pointer-events:none !important;
+  }
+
+  .maple-footer{
+    width:100% !important;
+    min-height:54px !important;
+    height:auto !important;
+    overflow:visible !important;
+  }
+}
+
+/* 작은 스마트폰 */
+@media (max-width:430px){
+  .boss-grid{
+    grid-template-columns:1fr !important;
+  }
+
+  .boss-card{
+    min-height:122px !important;
+  }
+
+  .primary-tab{
+    font-size:11px !important;
+  }
+
+  .top-nav button,
+  .top-nav .nav-btn{
+    font-size:10px !important;
+  }
+
+  .character-card,
+  .character-card:not(.add-character),
+  .character-card.add-character{
+    flex-basis:148px !important;
+    width:148px !important;
+    min-width:148px !important;
+  }
+
+  .active-label{
+    font-size:16px !important;
+  }
+
+  .calendar-event,
+  .calendar-event-main{
+    font-size:6.5px !important;
+  }
+}
+</style>
+
+
+<style>
+/* 현재: 캐릭터명 표시 크기 살짝 축소 */
+.active-label{
+  font-size: 1.65em !important;
+  line-height: 1.2 !important;
+}
+@media (max-width:760px){
+  .active-label{
+    font-size:15px !important;
+  }
+}
+</style>
+
 </head>
 
 <body>
@@ -7613,50 +8181,50 @@ function safeUUID(){
 const KEY='mapleBossDashboard_v17';
 
 const WEEKLY_BOSSES = [
-  {name:'자쿰', tier:'입문', power:1, diffs:['카오스'], prices:{'카오스':8080000}},
-  {name:'블러디 퀸', tier:'입문', power:2, diffs:['카오스'], prices:{'카오스':8140000}},
-  {name:'반반', tier:'입문', power:3, diffs:['카오스'], prices:{'카오스':8150000}},
-  {name:'피에르', tier:'입문', power:4, diffs:['카오스'], prices:{'카오스':8170000}},
-  {name:'매그너스', tier:'입문', power:5, diffs:['하드'], prices:{'하드':8560000}},
-  {name:'벨룸', tier:'입문', power:6, diffs:['카오스'], prices:{'카오스':9280000}},
-  {name:'파풀라투스', tier:'입문', power:7, diffs:['카오스'], prices:{'카오스':13100000}},
+  {name:'자쿰', tier:'입문', power:1, diffs:['카오스'], prices:{'카오스':4040000}},
+  {name:'블러디 퀸', tier:'입문', power:2, diffs:['카오스'], prices:{'카오스':4070000}},
+  {name:'반반', tier:'입문', power:3, diffs:['카오스'], prices:{'카오스':4070000}},
+  {name:'피에르', tier:'입문', power:4, diffs:['카오스'], prices:{'카오스':4080000}},
+  {name:'매그너스', tier:'입문', power:5, diffs:['하드'], prices:{'하드':4280000}},
+  {name:'벨룸', tier:'입문', power:6, diffs:['카오스'], prices:{'카오스':4640000}},
+  {name:'파풀라투스', tier:'입문', power:7, diffs:['카오스'], prices:{'카오스':6550000}},
 
   {name:'스우', tier:'중급', power:20, diffs:['노멀','하드','익스트림'],
-    prices:{'노멀':16700000,'하드':51500000,'익스트림':574000000}},
+    prices:{'노멀':8350000,'하드':48900000,'익스트림':545000000}},
   {name:'데미안', tier:'중급', power:21, diffs:['노멀','하드'],
-    prices:{'노멀':17500000,'하드':48900000}},
+    prices:{'노멀':8750000,'하드':46400000}},
   {name:'가디언 엔젤 슬라임', tier:'중급', power:22, diffs:['노멀','카오스'],
-    prices:{'노멀':25500000,'카오스':75100000}},
+    prices:{'노멀':12700000,'카오스':71300000}},
   {name:'루시드', tier:'중급', power:23, diffs:['이지','노멀','하드'],
-    prices:{'이지':29800000,'노멀':35600000,'하드':62900000}},
+    prices:{'이지':14900000,'노멀':17800000,'하드':59700000}},
   {name:'윌', tier:'중급', power:24, diffs:['이지','노멀','하드'],
-    prices:{'이지':32300000,'노멀':41100000,'하드':77100000}},
+    prices:{'이지':16100000,'노멀':20500000,'하드':73200000}},
   {name:'더스크', tier:'중급', power:25, diffs:['노멀','카오스'],
-    prices:{'노멀':44000000,'카오스':69800000}},
+    prices:{'노멀':22000000,'카오스':66300000}},
   {name:'듄켈', tier:'중급', power:26, diffs:['노멀','하드'],
-    prices:{'노멀':47500000,'하드':94400000}},
+    prices:{'노멀':23700000,'하드':89600000}},
   {name:'진 힐라', tier:'중급', power:27, diffs:['노멀','하드'],
-    prices:{'노멀':71200000,'하드':106000000}},
+    prices:{'노멀':67600000,'하드':100000000}},
 
   {name:'선택받은 세렌', tier:'상급', power:40, diffs:['노멀','하드','익스트림'],
-    prices:{'노멀':239000000,'하드':356000000,'익스트림':2835000000}},
+    prices:{'노멀':167000000,'하드':302000000,'익스트림':1840000000}},
   {name:'감시자 칼로스', tier:'상급', power:41, diffs:['이지','노멀','카오스','익스트림'],
-    prices:{'이지':280000000,'노멀':505000000,'카오스':1273000000,'익스트림':4104000000}},
+    prices:{'이지':238000000,'노멀':479000000,'카오스':1230000000,'익스트림':4104000000}},
   {name:'카링', tier:'상급', power:42, diffs:['이지','노멀','하드','익스트림'],
-    prices:{'이지':377000000,'노멀':678000000,'하드':1739000000,'익스트림':5387000000}},
+    prices:{'이지':320000000,'노멀':593000000,'하드':1560000000,'익스트림':5387000000}},
   {name:'벨로나', tier:'상급', power:43, diffs:['이지','노멀','하드'],
-    prices:{'이지':440000000,'노멀':678000000,'하드':1739000000}},
+    prices:{'이지':396000000,'노멀':824000000,'하드':2950000000}},
 
   {name:'찬란한 흉성', tier:'최상급', power:50, diffs:['노멀','하드'],
-    prices:{'노멀':625000000,'하드':2678000000}},
+    prices:{'노멀':576000000,'하드':2678000000}},
   {name:'림보', tier:'최상급', power:51, diffs:['노멀','하드'],
-    prices:{'노멀':1026000000,'하드':2385000000}},
+    prices:{'노멀':995000000,'하드':2385000000}},
   {name:'최초의 대적자', tier:'최상급', power:52, diffs:['이지','노멀','하드','익스트림'],
-    prices:{'이지':308000000,'노멀':560000000,'하드':1435000000,'익스트림':4712000000}},
+    prices:{'이지':261000000,'노멀':532000000,'하드':1390000000,'익스트림':4712000000}},
   {name:'발드릭스', tier:'최상급', power:53, diffs:['노멀','하드'],
-    prices:{'노멀':1368000000,'하드':3078000000}},
+    prices:{'노멀':1320000000,'하드':3078000000}},
   {name:'유피테르', tier:'최상급', power:54, diffs:['노멀','하드'],
-    prices:{'노멀':1615000000,'하드':4845000000}}
+    prices:{'노멀':1560000000,'하드':4845000000}}
 ];
 
 
