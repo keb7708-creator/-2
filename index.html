@@ -8316,6 +8316,15 @@ function fmtMesoShort(n){
   return `${Math.round(n/10000).toLocaleString()}만`;
 }
 
+// 아이템 판매/정산 금액은 반올림하지 않고 억·만·일의 자리까지 표시
+function fmtSaleMeso(n){
+  const amount=Math.max(0,Math.floor(Number(n)||0));
+  const eok=Math.floor(amount/100000000);
+  const man=Math.floor((amount%100000000)/10000);
+  const ones=amount%10000;
+  return `🪙 ${eok.toLocaleString()}억 ${String(man).padStart(4,'0')}만 ${String(ones).padStart(4,'0')}`;
+}
+
 function fmtTime(v){
   if(!v) return '일정 없음';
   const d=new Date(v); if(isNaN(d)) return v;
@@ -9642,7 +9651,7 @@ function injectLootButtons(){
     btn.className='boss-loot-quick'+(t.count?' has-items':'');
     btn.type='button';
     btn.textContent=t.count
-      ? `🎁 드랍 ${t.count}개 · 내 정산 ${fmtMesoShort(t.mine)}`
+      ? `🎁 드랍 ${t.count}개 · 내 정산 ${fmtSaleMeso(t.mine)}`
       : '＋ 드랍 아이템 등록';
     btn.onclick=()=>openBossLoot(c.id,b.id,false);
     card.appendChild(btn);
@@ -9803,8 +9812,8 @@ function renderSettlement(){
   });
 
   settlementItemCount.textContent=`${itemCount}개`;
-  settlementSoldTotal.textContent=fmtMesoShort(soldTotal);
-  settlementMyTotal.textContent=fmtMesoShort(myTotal);
+  settlementSoldTotal.textContent=fmtSaleMeso(soldTotal);
+  settlementMyTotal.textContent=fmtSaleMeso(myTotal);
 
   if(!groups.length){
     settlementPage=1;
@@ -9852,7 +9861,7 @@ function renderSettlement(){
                   <input type="checkbox" ${checked?'checked':''}
                     onchange="event.stopPropagation();togglePartnerDistributionPayment(this,'${c.id}','${b.id}','${item.id}',${idx})">
                   <span>🤝 ${escapeHtml(name)}</span>
-                  <span class="partner-payment-amount">${fmtMesoShort(payoutAmounts[idx+1]||0)}</span>
+                  <span class="partner-payment-amount">${fmtSaleMeso(payoutAmounts[idx+1]||0)}</span>
                 </label>`;
               }).join('')}
             </div>`
@@ -9864,11 +9873,11 @@ function renderSettlement(){
             <div><strong>${escapeHtml(item.name)}${Number(item.qty)>1?` ×${Number(item.qty)}`:''}
               <span class="loot-status-chip ${item.status==='sold'?'sold':'unsold'}">${item.status==='sold'?'판매완료':'미판매'}</span>
             </strong>
-            <small>${item.status==='sold'?`판매가 ${fmtMesoShort(gross)}${item.saleDate?` · ${escapeHtml(item.saleDate)} 판매`:''}`:'판매금액 미입력'}</small>${((item.partnerNames||b.partnerNames||'').trim() && Number(b.partySize||1)>=2)?`<small class="settlement-partner-note">🤝 깐부 ${escapeHtml((item.partnerNames||b.partnerNames||'').trim())}</small>`:''}${(item.distributionRatio && Number(b.partySize||1)>=2)?`<small class="settlement-partner-note">📊 분배 ${escapeHtml(String(item.distributionRatio).split(':').map(v=>{const n=Number(v);return Number.isFinite(n)?Number(n.toFixed(2)):v}).join(':'))}</small>`:''}
+            <small>${item.status==='sold'?`판매가 ${fmtSaleMeso(gross)}${item.saleDate?` · ${escapeHtml(item.saleDate)} 판매`:''}`:'판매금액 미입력'}</small>${((item.partnerNames||b.partnerNames||'').trim() && Number(b.partySize||1)>=2)?`<small class="settlement-partner-note">🤝 깐부 ${escapeHtml((item.partnerNames||b.partnerNames||'').trim())}</small>`:''}${(item.distributionRatio && Number(b.partySize||1)>=2)?`<small class="settlement-partner-note">📊 분배 ${escapeHtml(String(item.distributionRatio).split(':').map(v=>{const n=Number(v);return Number.isFinite(n)?Number(n.toFixed(2)):v}).join(':'))}</small>`:''}
             ${partnerChecks}</div>
           </div>
           <div class="settlement-item-money">
-            <b>${item.status==='sold'?fmtMesoShort(mine):'-'}</b>
+            <b>${item.status==='sold'?fmtSaleMeso(mine):'-'}</b>
             <small>내 정산금</small>
             <button type="button"
               class="settlement-delete-btn"
@@ -10041,7 +10050,7 @@ function updateLootMyShare(){
   const party=Math.max(1,Number(b?.partySize)||1);
   const mine=Math.floor((price*0.97)/party);
   const el=document.getElementById('lootMyShare');
-  if(el)el.textContent=fmtMesoShort(mine);
+  if(el)el.textContent=fmtSaleMeso(mine);
 }
 
 function addSelectedBossLoot(){
@@ -10091,7 +10100,7 @@ function renderLootDrafts(){
         <div><b>${escapeHtml(item.name)}${Number(item.qty)>1?` ×${item.qty}`:''}</b>
         <small>${item.status==='sold'?'판매완료':'미판매'}</small></div>
       </div>
-      <div class="draft-money">${item.status==='sold'?`내 정산 ${fmtMesoShort(mine)}`:'-'}</div>
+      <div class="draft-money">${item.status==='sold'?`내 정산 ${fmtSaleMeso(mine)}`:'-'}</div>
       <button type="button" onclick="removeLootDraft(${i})">×</button>
     </div>`;
   }).join('');
@@ -10240,9 +10249,9 @@ function openMobileSelectedItems(){
       return `<div class="mobile-selected-item-card">
         <div>
           <b>${escapeHtml(item.name)}${Number(item.qty)>1?` ×${Number(item.qty)}`:''}</b>
-          <small>${sold?'판매완료':'미판매'}${sold?` · 판매가 ${fmtMesoShort(gross)}`:''}</small>
+          <small>${sold?'판매완료':'미판매'}${sold?` · 판매가 ${fmtSaleMeso(gross)}`:''}</small>
         </div>
-        <div class="money">${sold?`내 정산 ${fmtMesoShort(mine)}`:'미판매'}</div>
+        <div class="money">${sold?`내 정산 ${fmtSaleMeso(mine)}`:'미판매'}</div>
       </div>`;
     }).join('');
   }
@@ -10882,9 +10891,9 @@ function updateSalePricePreview(){
     totalEl.style.color=(saleDistributionEqual||Math.abs(total-10)<0.001)?'#ef4e7a':'#c07a34';
   }
   const netEl=document.getElementById('salePriceNetAmount');
-  if(netEl)netEl.textContent=fmtMesoShort(net);
+  if(netEl)netEl.textContent=fmtSaleMeso(net);
   const feeDetail=document.getElementById('salePriceFeeDetail');
-  if(feeDetail)feeDetail.textContent=`수수료 ${fmtMesoShort(fee)} · 실수령 ${fmtMesoShort(net)}${party>=2?(saleDistributionEqual?' · 동등 분배':` · 분배 합계 ${Number(total.toFixed(2))}/10`):''}`;
+  if(feeDetail)feeDetail.textContent=`수수료 ${fmtSaleMeso(fee)} · 실수령 ${fmtSaleMeso(net)}${party>=2?(saleDistributionEqual?' · 동등 분배':` · 분배 합계 ${Number(total.toFixed(2))}/10`):''}`;
 
   let amounts;
   if(saleDistributionEqual && party>=2){
@@ -10894,14 +10903,14 @@ function updateSalePricePreview(){
   }else{
     amounts=units.map(v=>Math.floor(net*((Number(v)||0)/10)));
   }
-  salePriceMyShare.textContent=fmtMesoShort(amounts[0]||0);
+  salePriceMyShare.textContent=fmtSaleMeso(amounts[0]||0);
 
   const sg=document.getElementById('saleSettlementGrid');
   if(sg && party>=2){
     sg.innerHTML=people.map((name,i)=>`<div class="sale-settlement-person ${i===0?'mine':''}">
       <div class="who">${i===0?'👑':'👥'} ${escapeHtml(name)}</div>
       <div class="ratio">${saleDistributionEqual?`${Number((100/party).toFixed(2))}% (동등)`: `${(units[i]||0)*10}% (${units[i]||0}/10)`}</div>
-      <div class="amount">${fmtMesoShort(amounts[i]||0)}</div>
+      <div class="amount">${fmtSaleMeso(amounts[i]||0)}</div>
     </div>`).join('');
   }
 }
