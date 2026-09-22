@@ -8824,6 +8824,9 @@ function render(filterToday=todayOnly){
           ${ch.world?`<span>🌎 ${escapeHtml(ch.world)}</span>`:''}
           ${ch.guild?`<span>🛡️ <b style="font-weight:700;color:#777">길드</b>&nbsp; ${escapeHtml(ch.guild)}</span>`:''}
         </div>
+        <button class="scheduler-sync-btn ${ch.schedulerSyncing?'syncing':''}" onclick="event.stopPropagation();syncBossScheduler('${ch.id}')" title="실제 보스 클리어 기록 동기화" ${ch.schedulerSyncing?'disabled':''}>
+          ${ch.schedulerSyncing?'동기화 중':'⟳ 보스 동기화'}
+        </button>
       </div>
       ${selected?'<span class="character-star">★</span>':''}
       <button class="char-delete" onclick="event.stopPropagation();removeChar('${ch.id}')" aria-label="캐릭터 삭제">×</button>`;
@@ -11263,6 +11266,244 @@ applyBossPartnerInputs();
 
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});
   else init();
+})();
+</script>
+
+<style>
+/* 실제 메이플 스케줄러 보스 완료 동기화 */
+/* 카드 내용 아래에 버튼 전용 공간을 확보해 정보 박스와 겹치지 않게 함 */
+.character-card:not(.add-character),
+.character-card.add-character{
+  min-height:0 !important;
+  height:auto !important;
+}
+.character-card:not(.add-character){
+  padding-bottom:12px !important;
+}
+.scheduler-sync-btn{
+  position:static !important;width:100%;height:36px;flex:0 0 36px;
+  margin-top:7px;padding:0 8px;
+  border:1px solid #f2b7ca;border-radius:10px;background:#fff5f8;color:#d94d7c;
+  font-size:12px;font-weight:900;cursor:pointer;z-index:12;
+  display:flex;align-items:center;justify-content:center;white-space:nowrap
+}
+.character-card:not(.add-character) .char-delete{
+  left:8px !important;right:auto !important;top:8px !important;bottom:auto !important;
+  width:24px !important;height:24px !important;background:#fff4f6 !important;
+  border:1px solid #f3d8df !important;z-index:13 !important
+}
+.scheduler-sync-btn:hover{background:#ffe8f0}
+.scheduler-sync-btn:disabled{cursor:wait;opacity:.7}
+.scheduler-sync-btn.syncing{animation:schedulerPulse 1s ease-in-out infinite}
+@keyframes schedulerPulse{50%{opacity:.45}}
+.scheduler-sync-toast{
+  position:fixed;left:50%;bottom:26px;transform:translateX(-50%);z-index:99999;
+  max-width:min(420px,calc(100vw - 32px));padding:12px 16px;border-radius:14px;
+  background:#2f2830;color:#fff;font-size:13px;font-weight:800;text-align:center;
+  box-shadow:0 10px 30px rgba(40,20,30,.2)
+}
+.scheduler-sync-toast.ok{background:#b93d6b}.scheduler-sync-toast.error{background:#792d3f}
+@media(max-width:640px){
+  .character-card:not(.add-character){
+    min-height:0 !important;height:auto !important;padding-bottom:11px !important
+  }
+  .character-card.add-character{min-height:355px !important;height:355px !important}
+  .scheduler-sync-btn{height:34px;flex-basis:34px;margin-top:6px;font-size:11px}
+}
+
+/* v86: 캐릭터가 핑크 원 밖으로 잘리지 않도록 크기와 세로 위치 보정 */
+.character-card:not(.add-character) .char-image-btn{
+  overflow:hidden !important;
+}
+.character-card:not(.add-character) .char-image-btn img{
+  width:108px !important;
+  height:108px !important;
+  object-fit:contain !important;
+  object-position:center center !important;
+  transform:translateY(-12px) scale(2.65) !important;
+  transform-origin:center center !important;
+}
+@media(max-width:640px){
+  .character-card:not(.add-character) .char-image-btn img{
+    width:104px !important;
+    height:104px !important;
+    transform:translateY(-14px) scale(2.60) !important;
+  }
+}
+</style>
+
+<script>
+/* ===== v84: NEXON 스케줄러 API 보스 자동 완료 동기화 ===== */
+(function(){
+  const SCHEDULER_PATH='/scheduler/character-state';
+  const BOSS_NAME_ALIASES={
+    '가엔슬':'가디언 엔젤 슬라임',
+    '가디언엔젤슬라임':'가디언 엔젤 슬라임',
+    '선택받은세렌':'선택받은 세렌',
+    '세렌':'선택받은 세렌',
+    '감시자칼로스':'감시자 칼로스',
+    '칼로스':'감시자 칼로스',
+    '진힐라':'진 힐라',
+    '검은마법사':'검은 마법사'
+  };
+
+  function normalizedBossName(value){
+    const raw=String(value||'').trim();
+    const compact=raw.replace(/[\s·:()\[\]-]/g,'');
+    return BOSS_NAME_ALIASES[compact]||raw;
+  }
+  function apiFlag(value){
+    if(value===true || value===1)return true;
+    const s=String(value??'').trim().toLowerCase();
+    return ['true','1','y','yes','done','clear','cleared','complete','completed','완료','클리어'].includes(s);
+  }
+  function apiBossDone(item){
+    if(!item || typeof item!=='object')return false;
+
+    /* 스케줄러 API 버전별 완료 필드명 차이를 모두 지원 */
+    const directKeys=[
+      'complete_flag','completed_flag','clear_flag','boss_clear_flag',
+      'is_complete','is_completed','is_clear','is_cleared',
+      'complete','completed','clear','cleared','done',
+      'clear_yn','complete_yn','completion_status','clear_status','status'
+    ];
+    for(const key of directKeys){
+      if(Object.prototype.hasOwnProperty.call(item,key) && apiFlag(item[key]))return true;
+    }
+
+    /* 완료/클리어 의미의 새 필드가 추가되어도 자동 인식 */
+    for(const [key,value] of Object.entries(item)){
+      if(!/(complete|completed|completion|clear|cleared|done)/i.test(key))continue;
+      if(apiFlag(value))return true;
+      if(typeof value==='number' && value>0)return true;
+      if(value && typeof value==='object' && apiBossDone(value))return true;
+    }
+    return false;
+  }
+  function isMonthlyApiBoss(item){
+    const cycle=String(item?.cycle||'').toLowerCase();
+    return cycle.includes('monthly') || cycle.includes('월간');
+  }
+  function schedulerErrorMessage(err){
+    if(err?.message==='API_KEY_REQUIRED') return '먼저 NEXON Open API 키를 설정해 주세요.';
+    if(err?.message==='API_401' || err?.message==='API_403') return '이 API 키로 조회할 수 없는 캐릭터입니다. 캐릭터가 속한 넥슨 계정에서 발급한 개인 API 키가 필요해요.';
+    if(err?.message==='API_400') return '스케줄러 조회 대상이 아니거나, 이 API 키의 계정에 속하지 않은 캐릭터입니다.';
+    if(err?.message==='API_429') return 'API 요청이 너무 많습니다. 잠시 후 다시 시도해 주세요.';
+    return '보스 기록을 불러오지 못했습니다. API 키와 캐릭터 정보를 확인해 주세요.';
+  }
+  function showSchedulerToast(message,type='ok'){
+    document.querySelectorAll('.scheduler-sync-toast').forEach(el=>el.remove());
+    const el=document.createElement('div');
+    el.className=`scheduler-sync-toast ${type}`;
+    el.textContent=message;
+    document.body.appendChild(el);
+    setTimeout(()=>el.remove(),4200);
+  }
+  function matchLocalBoss(list,item){
+    const apiName=normalizedBossName(item?.content_name);
+    const apiDiff=normalizeBossDiff(item?.difficulty);
+    return (list||[]).find(b=>{
+      const sameName=normalizedBossName(b.name)===apiName;
+      const sameDiff=!apiDiff || normalizeBossDiff(b.difficulty)===apiDiff;
+      return sameName && sameDiff;
+    });
+  }
+
+  /* API에서 완료된 보스가 선택 목록에 없으면 자동으로 추가 */
+  function ensureCompletedBoss(ch,item){
+    const apiName=normalizedBossName(item?.content_name);
+    const apiDiff=normalizeBossDiff(item?.difficulty);
+    const monthlyTemplate=MONTHLY_BOSSES.find(t=>normalizedBossName(t.name)===apiName);
+    const weeklyTemplate=WEEKLY_BOSSES.find(t=>normalizedBossName(t.name)===apiName);
+    const monthly=!!monthlyTemplate || isMonthlyApiBoss(item);
+    const template=monthlyTemplate || weeklyTemplate;
+    const list=monthly ? ch.monthlyBosses : ch.bosses;
+
+    let boss=matchLocalBoss(list,item) || list.find(b=>normalizedBossName(b.name)===apiName);
+    if(!boss){
+      const name=template?.name || String(item?.content_name||'').trim();
+      if(!name)return {boss:null,added:false};
+      const diffs=template?.diffs?.slice() || (apiDiff?[apiDiff]:[]);
+      boss={
+        id:safeUUID(), name, tier:template?.tier || (monthly?'월간':'자동 추가'),
+        power:template?.power ?? 999, diffs,
+        prices:template?.prices || {}, difficulty:apiDiff || diffs[0] || '',
+        status:'todo', time:'', hidden:false, partySize:1,
+        selected:monthly?undefined:true, lootItems:'', lootMemo:''
+      };
+      list.push(boss);
+    }
+
+    const wasVisible=monthly ? !boss.hidden : (boss.selected && !boss.hidden);
+    boss.hidden=false;
+    if(!monthly)boss.selected=true;
+    if(apiDiff){
+      if(!Array.isArray(boss.diffs))boss.diffs=[];
+      if(!boss.diffs.includes(apiDiff))boss.diffs.push(apiDiff);
+      boss.difficulty=apiDiff;
+    }
+    return {boss,added:!wasVisible};
+  }
+
+  window.syncBossScheduler=async function(characterId){
+    const ch=data.chars.find(c=>c.id===characterId);
+    if(!ch)return;
+    if(!getApiKey()){
+      openApiSettings();
+      showSchedulerToast('개인 API 키를 설정한 뒤 다시 동기화해 주세요.','error');
+      return;
+    }
+    if(!ch.ocid){
+      showSchedulerToast('캐릭터 정보를 먼저 새로고침해 주세요.','error');
+      return;
+    }
+    ch.schedulerSyncing=true;
+    render();
+    try{
+      // 오늘 기록은 date 파라미터 없이 호출해야 실시간 값이 반환됩니다.
+      const state=await nexonFetch(SCHEDULER_PATH,{ocid:ch.ocid});
+      const rows=Array.isArray(state?.boss_contents)?state.boss_contents:[];
+      let completed=0, matched=0, newlyCompleted=0, autoAdded=0;
+      rows.forEach(item=>{
+        const done=apiBossDone(item);
+        const monthly=isMonthlyApiBoss(item) || MONTHLY_BOSSES.some(t=>normalizedBossName(t.name)===normalizedBossName(item?.content_name));
+        const list=monthly?ch.monthlyBosses:ch.bosses;
+        let boss=matchLocalBoss(list,item);
+        if(done){
+          const ensured=ensureCompletedBoss(ch,item);
+          boss=ensured.boss || boss;
+          if(ensured.added)autoAdded++;
+        }
+        if(!boss)return;
+        matched++;
+        if(done){
+          completed++;
+          if(boss.status!=='done') newlyCompleted++;
+          boss.status='done';
+          boss.apiCompleted=true;
+          boss.apiCompletedAt=new Date().toISOString();
+        }
+        // API 반영 지연 중 수동 완료 기록이 되돌아가지 않도록 미완료 값은 덮어쓰지 않습니다.
+      });
+      ch.schedulerLastSyncedAt=new Date().toISOString();
+      ch.schedulerLastDate=state?.date||'';
+      ch.schedulerLastMatched=matched;
+      save();
+      if(!rows.length){
+        showSchedulerToast('조회된 보스 기록이 없습니다. 인게임 메이플 스케줄러 등록 상태를 확인해 주세요.','error');
+      }else if(!matched){
+        showSchedulerToast(`기록 ${rows.length}개를 받았지만 현재 대시보드의 보스·난이도와 일치하는 항목이 없습니다.`,'error');
+      }else{
+        showSchedulerToast(`동기화 완료 · ${matched}개 확인 · 완료 ${completed}개${newlyCompleted?` · 새 완료 ${newlyCompleted}개`:''}${autoAdded?` · 목록 추가 ${autoAdded}개`:''}`);
+      }
+    }catch(err){
+      showSchedulerToast(schedulerErrorMessage(err),'error');
+    }finally{
+      ch.schedulerSyncing=false;
+      save();
+      render();
+    }
+  };
 })();
 </script>
 
