@@ -7720,6 +7720,7 @@ button,
   <span class="active-character-bubble">💡 닉네임을 누르면<br><b>환산 검색 사이트</b>로 이동해요!</span>
 </span>
       </div>
+      <button id="syncAllBossesBtn" class="sync-all-bosses-btn" onclick="syncAllBossSchedulers()">⟳ 전체 보스 동기화</button>
       <div id="characterStrip" class="character-strip"></div>
     </section>
 
@@ -8824,9 +8825,6 @@ function render(filterToday=todayOnly){
           ${ch.world?`<span>🌎 ${escapeHtml(ch.world)}</span>`:''}
           ${ch.guild?`<span>🛡️ <b style="font-weight:700;color:#777">길드</b>&nbsp; ${escapeHtml(ch.guild)}</span>`:''}
         </div>
-        <button class="scheduler-sync-btn ${ch.schedulerSyncing?'syncing':''}" onclick="event.stopPropagation();syncBossScheduler('${ch.id}')" title="실제 보스 클리어 기록 동기화" ${ch.schedulerSyncing?'disabled':''}>
-          ${ch.schedulerSyncing?'동기화 중':'⟳ 보스 동기화'}
-        </button>
       </div>
       ${selected?'<span class="character-star">★</span>':''}
       <button class="char-delete" onclick="event.stopPropagation();removeChar('${ch.id}')" aria-label="캐릭터 삭제">×</button>`;
@@ -11392,6 +11390,7 @@ applyBossPartnerInputs();
     return '보스 기록을 불러오지 못했습니다. API 키와 캐릭터 정보를 확인해 주세요.';
   }
   function showSchedulerToast(message,type='ok'){
+    if(window.__syncingAllBosses)return;
     document.querySelectorAll('.scheduler-sync-toast').forEach(el=>el.remove());
     const el=document.createElement('div');
     el.className=`scheduler-sync-toast ${type}`;
@@ -11505,6 +11504,62 @@ applyBossPartnerInputs();
     }
   };
 })();
+</script>
+
+<style>
+/* 캐릭터별 버튼 대신 사용하는 전체 보스 동기화 */
+.sync-all-bosses-btn{
+  width:100%;height:44px;margin:0 0 12px;padding:0 16px;
+  border:1px solid #f1a8bf;border-radius:14px;
+  background:linear-gradient(180deg,#fff5f8,#ffeaf1);
+  color:#d83f72;font-size:14px;font-weight:900;cursor:pointer;
+  box-shadow:0 4px 10px rgba(218,73,119,.10)
+}
+.sync-all-bosses-btn:hover{background:#ffe3ed}
+.sync-all-bosses-btn:disabled{opacity:.65;cursor:wait}
+@media(max-width:640px){
+  .sync-all-bosses-btn{height:42px;margin-bottom:10px;font-size:13px;border-radius:12px}
+}
+</style>
+
+<script>
+/* 등록된 모든 캐릭터의 보스 기록을 순서대로 동기화 */
+window.syncAllBossSchedulers=async function(){
+  if(window.__syncingAllBosses)return;
+  if(!getApiKey()){
+    openApiSettings();
+    showSchedulerToast('개인 API 키를 설정한 뒤 다시 동기화해 주세요.','error');
+    return;
+  }
+  const targets=(data.chars||[]).filter(ch=>ch.ocid);
+  const skipped=(data.chars||[]).length-targets.length;
+  if(!targets.length){
+    showSchedulerToast('동기화할 캐릭터 정보가 없습니다. 캐릭터 정보를 먼저 새로고침해 주세요.','error');
+    return;
+  }
+
+  window.__syncingAllBosses=true;
+  let requested=0;
+  try{
+    for(let i=0;i<targets.length;i++){
+      const btn=document.getElementById('syncAllBossesBtn');
+      if(btn){
+        btn.disabled=true;
+        btn.textContent=`동기화 중 ${i+1}/${targets.length} · ${targets[i].name}`;
+      }
+      await window.syncBossScheduler(targets[i].id);
+      requested++;
+      if(i<targets.length-1)await new Promise(resolve=>setTimeout(resolve,250));
+    }
+  }finally{
+    window.__syncingAllBosses=false;
+    const btn=document.getElementById('syncAllBossesBtn');
+    if(btn){btn.disabled=false;btn.textContent='⟳ 전체 보스 동기화';}
+    save();
+    render();
+  }
+  showSchedulerToast(`전체 동기화 완료 · ${requested}명 조회${skipped?` · 정보 없음 ${skipped}명 제외`:''}`);
+};
 </script>
 
 </body>
