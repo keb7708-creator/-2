@@ -7662,6 +7662,13 @@ button,
 }
 </style>
 
+
+<style>
+.settlement-date-divider{padding:12px 14px 7px;margin-top:8px;color:#7a5b55;font-size:13px;border-bottom:1px dashed #eadbd6}
+.settlement-date-divider:first-child{margin-top:0}
+.settlement-loot-source{display:block;margin-top:5px;font-weight:700;color:#8b6f69}
+@media(max-width:640px){.settlement-loot-source{font-size:11px;line-height:1.55}.settlement-date-divider{padding-left:10px}}
+</style>
 </head>
 
 <body>
@@ -10159,12 +10166,16 @@ function renderSettlement(){
   const start=(settlementPage-1)*SETTLEMENT_PAGE_SIZE;
   const pageItems=flatItems.slice(start,start+SETTLEMENT_PAGE_SIZE);
 
-  const pageGroups=[];
-  pageItems.forEach(({c,b,item})=>{
-    let g=pageGroups.find(x=>x.c.id===c.id && x.b.id===b.id);
-    if(!g){ g={c,b,records:[]}; pageGroups.push(g); }
-    g.records.push(item);
-  });
+  // 보스별 그룹이 아니라 아이템을 잡은 날짜 기준으로 그대로 나열한다.
+  // 같은 날짜 안에서는 기존 최신순 정렬 순서를 유지한다.
+  const displayLootDate=(item)=>{
+    const raw=item?.acquiredDate || item?.acquiredAt || '';
+    if(!raw) return '날짜 기록 없음';
+    const m=String(raw).match(/^(\d{4})-(\d{2})-(\d{2})/);
+    if(m) return `${m[1]}-${m[2]}-${m[3]}`;
+    const d=new Date(raw);
+    return Number.isFinite(d.getTime()) ? ymdLocal(d) : '날짜 기록 없음';
+  };
 
   const pendingPartnerEntries=Object.entries(pendingPartnerTotals)
     .sort((a,b)=>b[1]-a[1]);
@@ -10182,56 +10193,55 @@ function renderSettlement(){
         : `<div class="pending-distribution-empty">분배 예정 금액이 없어요 ✓</div>`}
     </div>`;
 
-  const listHtml=pageGroups.map(({c,b,records})=>`
-    <div class="settlement-boss-group">
-      <div class="settlement-boss-head">
-        <strong>${escapeHtml(c.name)} · ${escapeHtml(b.name)}</strong>
-        <span>${escapeHtml(b.difficulty||'')} · ${Number(b.partySize||1)}인${Number(b.partySize||1)>=2 && (b.partnerNames||'').trim()?` · 🤝 ${escapeHtml((b.partnerNames||'').trim())}`:''}</span>
-      </div>
-      ${records.map(item=>{
-        const gross=Number(item.salePrice)||0;
-        const party=Math.max(1,Number(b.partySize)||1);
-        const savedRatio=party>=2 ? parseDistributionRatio(item.distributionRatio||defaultDistributionRatio(party),party) : {mine:1};
-        const mine=item.status==='sold'?Math.floor((gross*0.97)*(savedRatio?savedRatio.mine:(1/party))):0;
-        const partnerNames=getItemPartnerNames(item,b);
-        const payoutAmounts=getItemDistributionAmounts(item,b);
-        const paidPartners=Array.isArray(item.distributionPaidPartners)?item.distributionPaidPartners:[];
-        const partnerChecks=(item.status==='sold' && partnerNames.length)
-          ? `<div class="settlement-partner-payments" onclick="event.stopPropagation()">
-              ${partnerNames.map((name,idx)=>{
-                const checked=paidPartners.includes(name);
-                return `<label class="partner-payment-check ${checked?'checked':''}">
-                  <input type="checkbox" ${checked?'checked':''}
-                    onchange="event.stopPropagation();togglePartnerDistributionPayment(this,'${c.id}','${b.id}','${item.id}',${idx})">
-                  <span>🤝 ${escapeHtml(name)}</span>
-                  <span class="partner-payment-amount">${fmtSaleMeso(payoutAmounts[idx+1]||0)}</span>
-                </label>`;
-              }).join('')}
-            </div>`
-          : '';
+  let lastDate='';
+  const listHtml=pageItems.map(({c,b,item})=>{
+    const gross=Number(item.salePrice)||0;
+    const party=Math.max(1,Number(b.partySize)||1);
+    const savedRatio=party>=2 ? parseDistributionRatio(item.distributionRatio||defaultDistributionRatio(party),party) : {mine:1};
+    const mine=item.status==='sold'?Math.floor((gross*0.97)*(savedRatio?savedRatio.mine:(1/party))):0;
+    const partnerNames=getItemPartnerNames(item,b);
+    const payoutAmounts=getItemDistributionAmounts(item,b);
+    const paidPartners=Array.isArray(item.distributionPaidPartners)?item.distributionPaidPartners:[];
+    const partnerChecks=(item.status==='sold' && partnerNames.length)
+      ? `<div class="settlement-partner-payments" onclick="event.stopPropagation()">
+          ${partnerNames.map((name,idx)=>{
+            const checked=paidPartners.includes(name);
+            return `<label class="partner-payment-check ${checked?'checked':''}">
+              <input type="checkbox" ${checked?'checked':''}
+                onchange="event.stopPropagation();togglePartnerDistributionPayment(this,'${c.id}','${b.id}','${item.id}',${idx})">
+              <span>🤝 ${escapeHtml(name)}</span>
+              <span class="partner-payment-amount">${fmtSaleMeso(payoutAmounts[idx+1]||0)}</span>
+            </label>`;
+          }).join('')}
+        </div>`
+      : '';
+    const caughtDate=displayLootDate(item);
+    const dateDivider=caughtDate!==lastDate
+      ? `<div class="settlement-date-divider"><strong>📅 ${escapeHtml(caughtDate)}</strong></div>`
+      : '';
+    lastDate=caughtDate;
 
-        return `<div class="settlement-item" onclick="openSalePriceEditor('${c.id}','${b.id}','${item.id}')">
-          <div class="settlement-item-main settlement-item-with-icon">
-            ${itemIconHtml(item.name)}
-            <div><strong>${escapeHtml(item.name)}${Number(item.qty)>1?` ×${Number(item.qty)}`:''}
-              <span class="loot-status-chip ${item.status==='sold'?'sold':'unsold'}">${item.status==='sold'?'판매완료':'미판매'}</span>
-            </strong>
-            <small>${item.status==='sold'?`판매가 ${fmtSaleMeso(gross)}${item.saleDate?` · ${escapeHtml(item.saleDate)} 판매`:''}`:'판매금액 미입력'}</small>${((item.partnerNames||b.partnerNames||'').trim() && Number(b.partySize||1)>=2)?`<small class="settlement-partner-note">🤝 깐부 ${escapeHtml((item.partnerNames||b.partnerNames||'').trim())}</small>`:''}${(item.distributionRatio && Number(b.partySize||1)>=2)?`<small class="settlement-partner-note">📊 분배 ${escapeHtml(String(item.distributionRatio).split(':').map(v=>{const n=Number(v);return Number.isFinite(n)?Number(n.toFixed(2)):v}).join(':'))}</small>`:''}
-            ${partnerChecks}</div>
-          </div>
-          <div class="settlement-item-money">
-            <b>${item.status==='sold'?fmtSaleMeso(mine):'-'}</b>
-            <small>내 정산금</small>
-            <button type="button"
-              class="settlement-delete-btn"
-              title="정산 내역 삭제"
-              aria-label="${escapeHtml(item.name)} 정산 내역 삭제"
-              onclick="event.stopPropagation();deleteSettlementItem('${c.id}','${b.id}','${item.id}')">삭제</button>
-          </div>
-        </div>`;
-      }).join('')}
-    </div>
-  `).join('');
+    return `${dateDivider}<div class="settlement-item" onclick="openSalePriceEditor('${c.id}','${b.id}','${item.id}')">
+      <div class="settlement-item-main settlement-item-with-icon">
+        ${itemIconHtml(item.name)}
+        <div><strong>${escapeHtml(item.name)}${Number(item.qty)>1?` ×${Number(item.qty)}`:''}
+          <span class="loot-status-chip ${item.status==='sold'?'sold':'unsold'}">${item.status==='sold'?'판매완료':'미판매'}</span>
+        </strong>
+        <small class="settlement-loot-source">👤 먹은 캐릭터 ${escapeHtml(c.name)} · 👹 보스 ${escapeHtml(b.name)}${b.difficulty?` (${escapeHtml(b.difficulty)})`:''} · 📅 ${escapeHtml(caughtDate)}</small>
+        <small>${item.status==='sold'?`판매가 ${fmtSaleMeso(gross)}${item.saleDate?` · ${escapeHtml(item.saleDate)} 판매`:''}`:'판매금액 미입력'}</small>${((item.partnerNames||b.partnerNames||'').trim() && Number(b.partySize||1)>=2)?`<small class="settlement-partner-note">🤝 깐부 ${escapeHtml((item.partnerNames||b.partnerNames||'').trim())}</small>`:''}${(item.distributionRatio && Number(b.partySize||1)>=2)?`<small class="settlement-partner-note">📊 분배 ${escapeHtml(String(item.distributionRatio).split(':').map(v=>{const n=Number(v);return Number.isFinite(n)?Number(n.toFixed(2)):v}).join(':'))}</small>`:''}
+        ${partnerChecks}</div>
+      </div>
+      <div class="settlement-item-money">
+        <b>${item.status==='sold'?fmtSaleMeso(mine):'-'}</b>
+        <small>내 정산금</small>
+        <button type="button"
+          class="settlement-delete-btn"
+          title="정산 내역 삭제"
+          aria-label="${escapeHtml(item.name)} 정산 내역 삭제"
+          onclick="event.stopPropagation();deleteSettlementItem('${c.id}','${b.id}','${item.id}')">삭제</button>
+      </div>
+    </div>`;
+  }).join('');
 
   const paginationHtml=totalPages>1 ? `
     <div class="settlement-pagination" aria-label="정산 내역 페이지">
