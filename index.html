@@ -10139,11 +10139,16 @@ function renderSettlement(){
     return;
   }
 
-  // 아이템 기준 10개씩 페이지 분리 + 먹은 날짜 최신순 정렬
-  // 신규 기록은 acquiredDate를 사용하고, 기존 기록은 보스 일정 날짜 → 보관 날짜 순으로 보정합니다.
-  const settlementLootDate=({b,item})=>{
-    const raw=item?.acquiredDate || b?.time || item?.archivedAt || '';
-    const t=raw ? new Date(raw).getTime() : 0;
+  // 아이템 기준 10개씩 페이지 분리 + 날짜 최신순 정렬
+  // 신규 기록: 먹은 날짜(acquiredDate) 우선
+  // 기존 기록: acquiredDate가 없으므로 판매일 → 보관일 순으로 보정
+  // (b.time은 시각값일 수 있어 날짜 정렬 기준에서 제외)
+  const settlementLootDate=({item})=>{
+    const raw=item?.acquiredAt || item?.acquiredDate || item?.saleDate || item?.archivedAt || '';
+    if(!raw) return 0;
+    // YYYY-MM-DD 형식은 로컬 자정 기준으로 안전하게 변환
+    const m=String(raw).match(/^(\d{4})-(\d{2})-(\d{2})/);
+    const t=m ? new Date(Number(m[1]),Number(m[2])-1,Number(m[3])).getTime() : new Date(raw).getTime();
     return Number.isFinite(t) ? t : 0;
   };
   const flatItems=[];
@@ -10404,13 +10409,20 @@ function addSelectedBossLoot(){
   const status=document.getElementById('lootEditStatus')?.value||'unsold';
   const salePrice=status==='sold'?parseMesoInput(document.getElementById('lootEditPrice')?.value):0;
 
+  // 아이템 획득일은 해당 보스를 잡은 날짜를 자동 사용합니다.
+  // 완료 날짜 기록이 없는 기존 보스는 등록한 오늘 날짜를 사용합니다.
+  const {b}=getActiveLootContext();
+  const killedAt = b?.completedAt || '';
+  const acquiredDate = killedAt ? ymdLocal(new Date(killedAt)) : ymdLocal(new Date());
+
   lootDrafts.push({
     id:safeUUID(),
     name:lootSelectedName,
     qty,
     status,
     salePrice,
-    acquiredDate: ymdLocal(new Date())
+    acquiredDate,
+    acquiredAt: killedAt || new Date().toISOString()
   });
 
   lootSelectedName='';
@@ -10531,7 +10543,14 @@ function cycle(cid,bid){
   // 완료 버튼을 누른 직후 발생할 수 있는 모든 아이템 팝업 호출을 차단
   __lootPopupSuppressUntil = Date.now() + 1000;
 
-  b.status = b.status === 'done' ? 'todo' : 'done';
+  const markingDone = b.status !== 'done';
+  b.status = markingDone ? 'done' : 'todo';
+  // 보스를 완료 처리한 날짜를 '잡은 날짜'로 저장합니다.
+  if(markingDone){
+    b.completedAt = new Date().toISOString();
+  }else{
+    b.completedAt = '';
+  }
   save();
   render();
 }
