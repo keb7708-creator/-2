@@ -7697,6 +7697,22 @@ button,
 </style><style id="loan-manager-style">
 .loan-summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;margin:18px 0}.loan-stat{background:#fff;border:1px solid #f1dce4;border-radius:15px;padding:14px 10px}.loan-stat small{display:block;color:#907a85;font-weight:800;font-size:12px}.loan-stat strong{display:block;margin-top:7px;color:#f05282;font-size:17px;overflow-wrap:anywhere}.loan-form{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px;background:#fff;border:1px solid #f0dce3;padding:15px;border-radius:17px}.loan-form label,.loan-repay-form label{font-size:12px;font-weight:850;color:#76616d;display:flex;flex-direction:column;gap:6px}.loan-form input,.loan-repay-form input{min-width:0;width:100%;border:1px solid #e8d8df;border-radius:10px;padding:11px;background:#fff}.loan-wide{grid-column:1/-1}.loan-primary{border:0;background:#ff6e94;color:#fff;font-weight:900;border-radius:11px;padding:12px;cursor:pointer}.loan-list-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:23px}.loan-list-head h3{margin:0;font-size:18px}.loan-list-head select{width:auto;padding:9px}.loan-records{display:grid;gap:12px;margin-top:13px}.loan-entry{background:#fff;border:1px solid #eedce4;border-radius:15px;padding:14px}.loan-entry-top{display:flex;justify-content:space-between;gap:10px;align-items:center}.loan-entry-top strong{font-size:17px}.loan-chip{font-size:11px;border-radius:99px;background:#fff0d8;color:#9b6c23;padding:5px 9px;font-weight:900}.loan-chip.closed{background:#e9f8ed;color:#318b50}.loan-meta{font-size:12px;color:#8c7a83;margin:7px 0;overflow-wrap:anywhere}.loan-amounts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;margin:12px 0}.loan-amounts div{background:#fff6f9;border-radius:10px;padding:9px 7px;overflow-wrap:anywhere}.loan-amounts small{display:block;font-size:11px;color:#967b87}.loan-amounts b{display:block;font-size:13px;margin-top:4px}.loan-actions{display:flex;gap:8px;flex-wrap:wrap}.loan-actions button{border:1px solid #ecd6df;background:#fff7fa;border-radius:9px;padding:8px 11px;color:#9a4764;font-weight:800}.loan-actions .loan-repay-toggle{background:#ff7195;color:white;border-color:#ff7195}.loan-repay-form{display:grid;grid-template-columns:1fr 1fr auto;gap:8px;align-items:end;margin-top:12px;padding:11px;border-radius:12px;background:#fff6f9}.loan-history{font-size:12px;color:#786b71;margin-top:10px}.loan-history div{padding:4px 0}.loan-storage-note{font-size:11px;color:#9b8790;margin-top:16px}.loan-empty-state{padding:25px;text-align:center;color:#9b8790;border:1px dashed #eacbd7;border-radius:14px}.loan-error{color:#c83957;font-size:12px;margin-top:8px}@media(max-width:640px){.loan-summary{grid-template-columns:1fr}.loan-form{grid-template-columns:1fr}.loan-form>*{grid-column:1/-1}.loan-repay-form{grid-template-columns:1fr 1fr}.loan-repay-form button{grid-column:1/-1}.loan-amounts b{font-size:11px}}
 </style>
+<style id="loan-korean-amount-style">
+.loan-amount-korean{display:block;margin-top:2px;padding:8px 11px;border-radius:10px;background:#fff3f7;border:1px solid #f4d6e2;color:#df4f80;font-size:14px;font-weight:900;font-variant-numeric:tabular-nums}
+</style>
+<style id="rice-meso-unit-preview-style">
+.rice-meso-unit-preview{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:8px;padding:11px 13px;border:1px solid #f5c7d6;border-radius:12px;background:linear-gradient(110deg,#fff5f8,#fff9ed);color:#9a6176;font-size:12px;font-weight:800}
+.rice-meso-unit-preview strong{font-size:17px;color:#f25183;font-weight:900;font-variant-numeric:tabular-nums;text-align:right;overflow-wrap:anywhere}
+@media(max-width:480px){.rice-meso-unit-preview{flex-wrap:wrap}.rice-meso-unit-preview strong{font-size:15px}}
+</style>
+<style id="rice-sales-style">
+.primary-tabs{grid-template-columns:repeat(5,minmax(0,1fr))!important}
+@media(max-width:760px){.primary-tabs{grid-template-columns:repeat(5,minmax(0,1fr))!important;gap:4px!important}.primary-tab{font-size:11px!important;padding:10px 2px!important}}
+.rice-view{padding:12px 22px 30px}.rice-panel{padding:22px;border:1px solid #f0d9df;border-radius:23px;background:linear-gradient(135deg,#fffdfa,#fff5f8)}
+.rice-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:17px 0}.rice-stat{background:white;border:1px solid #f0dce3;border-radius:14px;padding:14px}.rice-stat small{display:block;color:#987d88;font-size:12px}.rice-stat strong{display:block;margin-top:6px;font-size:17px;color:#d94e7b;overflow-wrap:anywhere}
+.rice-form{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;padding:15px;background:#fff;border:1px solid #f0dce3;border-radius:16px}.rice-form label{display:flex;flex-direction:column;gap:6px;font-size:12px;font-weight:800;color:#74636b}.rice-form input,.rice-form textarea{min-width:0;width:100%;padding:11px;border:1px solid #e8d8df;border-radius:10px;background:white}.rice-wide{grid-column:1/-1}.rice-primary{border:0;border-radius:11px;background:#ff6e94;color:white;font-weight:900;padding:12px;cursor:pointer}.rice-hint{font-size:12px;color:#c04f78;margin-top:3px}.rice-records{display:grid;gap:10px;margin-top:12px}.rice-entry{border:1px solid #f0dce3;background:#fff;border-radius:14px;padding:14px}.rice-entry-top{display:flex;justify-content:space-between;gap:12px}.rice-entry strong{font-size:15px}.rice-entry p{margin:7px 0;color:#76666d;font-size:12px;overflow-wrap:anywhere}.rice-entry button{border:1px solid #f0d3de;background:#fff6f9;border-radius:8px;color:#c44d76;padding:6px 10px;cursor:pointer}.rice-empty{padding:25px;text-align:center;color:#9b8790}.rice-note{font-size:11px;color:#98858d;margin-top:15px}
+@media(max-width:640px){.rice-view{padding:10px}.rice-panel{padding:13px}.rice-stats{grid-template-columns:1fr}.rice-form{grid-template-columns:1fr}.rice-form>*{grid-column:1/-1}}
+</style>
 </head>
 
 <body>
@@ -7798,6 +7814,7 @@ button,
     <button id="scheduleTabBtn" class="primary-tab" type="button"
       role="tab" aria-selected="false" aria-controls="scheduleView" onclick="setMainTab('schedule')">📅 일정</button>
     <button id="loanTabBtn" class="primary-tab" type="button" role="tab" aria-selected="false" aria-controls="loanView" onclick="setMainTab('loan')">💸 대출</button>
+    <button id="riceTabBtn" class="primary-tab" type="button" role="tab" aria-selected="false" aria-controls="riceView" onclick="setMainTab('rice')">💵 쌀판매</button>
   </div>
 
   <div id="homeView" class="app-tab-view active">
@@ -7928,7 +7945,7 @@ button,
       <div class="loan-direction-tabs"><button type="button" id="loanLendMode" class="loan-direction active">💰 내가 빌려줌</button><button type="button" id="loanBorrowMode" class="loan-direction">💸 내가 빌림</button></div><form id="loanForm" class="loan-form">
         <label id="loanCreditorLabel">채권자 닉네임 (빌려준 사람)<input id="loanCreditor" maxlength="40" placeholder="채권자 캐릭터 닉네임" required></label>
         <label id="loanDebtorLabel">채무자 닉네임 (빌린 사람)<input id="loanDebtor" maxlength="40" placeholder="채무자 캐릭터 닉네임" required></label>
-        <label id="loanAmountLabel">빌려준 메소<input id="loanAmount" type="text" inputmode="numeric" placeholder="예: 1,000,000,000" required></label>
+        <label id="loanAmountLabel">빌려준 메소<input id="loanAmount" type="text" inputmode="numeric" placeholder="예: 1,000,000,000" required><span id="loanAmountKorean" class="loan-amount-korean" aria-live="polite">0억 0000만</span></label>
         <label id="loanDateLabel">빌려준 날짜<input id="loanDate" type="date" required></label>
         <label id="loanDueLabel">돌려받을 예정일 (선택)<input id="loanDue" type="date"></label>
         <label class="loan-wide">메모 (선택)<input id="loanMemo" maxlength="150" placeholder="대출 사유 등"></label>
@@ -7940,6 +7957,20 @@ button,
     </div>
   </section>
 
+<section id="riceView" class="app-tab-view rice-view" aria-labelledby="riceTabBtn">
+<div class="rice-panel"><div class="settlement-heading"><h2>💵 쌀판매</h2><small>메소 현금 판매 내역 관리</small></div>
+<div class="rice-stats" id="riceStats"></div>
+<form class="rice-form" id="riceForm">
+<label>판매한 메소<input id="riceMeso" inputmode="numeric" type="text" placeholder="예: 1,000,000,000" required><span class="rice-meso-unit-preview" aria-live="polite"><span>🍁 메소 단위</span><strong id="riceMesoPreview">0억 0000만</strong></span></label>
+<label>받은 현금 (원)<input id="riceWon" inputmode="numeric" type="text" placeholder="예: 14,000" required></label>
+<label>판매 날짜<input id="riceDate" type="date" required></label>
+<label>구매자 닉네임 (선택)<input id="riceBuyer" maxlength="60" placeholder="구매자 캐릭터 닉네임"></label>
+<label class="rice-wide">메모 (선택)<textarea id="riceMemo" rows="2" maxlength="300" placeholder="거래 방법, 입금 확인 등"></textarea></label>
+<div class="rice-hint rice-wide" id="riceRate">1억 메소당 판매 단가: -</div>
+<button class="rice-primary rice-wide" id="riceSubmit" type="submit">💵 쌀판매 기록 저장</button>
+<button type="button" id="riceCancelEdit" class="rice-wide" style="display:none;border:1px solid #ead3dc;background:white;border-radius:10px;padding:10px">수정 취소</button>
+</form><h3 style="margin:24px 0 8px">📒 판매 기록</h3><div id="riceRecords" class="rice-records"></div>
+<p class="rice-note">판매 내역은 이 브라우저에 저장됩니다. 보스 결정석 정산 및 대출 내역과 별도로 관리됩니다.</p></div></section>
   <section id="settlementView" class="app-tab-view settlement-view" aria-labelledby="settlementTabBtn">
     <div class="settlement-panel">
       <div class="settlement-heading">
@@ -9750,20 +9781,22 @@ function importData(){
 }
 
 function setMainTab(tab){
-  const validTabs = ['home','settlement','schedule','loan'];
+  const validTabs = ['home','settlement','schedule','loan','rice'];
   if(!validTabs.includes(tab)) tab = 'home';
 
   const buttons = {
     home: document.getElementById('homeTabBtn'),
     settlement: document.getElementById('settlementTabBtn'),
     schedule: document.getElementById('scheduleTabBtn'),
-    loan: document.getElementById('loanTabBtn')
+    loan: document.getElementById('loanTabBtn'),
+    rice: document.getElementById('riceTabBtn')
   };
   const views = {
     home: document.getElementById('homeView'),
     settlement: document.getElementById('settlementView'),
     schedule: document.getElementById('scheduleView'),
-    loan: document.getElementById('loanView')
+    loan: document.getElementById('loanView'),
+    rice: document.getElementById('riceView')
   };
 
   validTabs.forEach(name=>{
@@ -12254,6 +12287,12 @@ window.syncAllBossSchedulers=async function(){
  show();});show();
 })();
 </script>
+<style id="loan-repayment-memo-style">
+.loan-repay-form .loan-repay-memo-label{grid-column:1/-1;display:flex;flex-direction:column;gap:6px;font-size:12px;font-weight:800;color:#74685f}
+.loan-repay-memo-label textarea{width:100%;min-height:66px;resize:vertical;border:1px solid #e5d3dc;border-radius:11px;background:#fff;padding:10px;color:#302b28;font:inherit}
+.loan-payment-line{padding:6px 0;border-bottom:1px solid #f4e9ed;overflow-wrap:anywhere}
+.loan-payment-memo{font-size:12px;color:#826475;white-space:pre-wrap;margin:4px 0 2px}
+</style>
 <script id="loan-manager-script">
 (function(){
 'use strict';
@@ -12282,15 +12321,44 @@ const borrowed=type(r)==='borrowed',rem=remaining(r),done=rem===0,card=node('art
 card.append(node('div','loan-meta','채권자: '+(r.creditor||(borrowed?r.person:'나'))+' · 채무자: '+(r.debtor||(borrowed?'나':r.person))));
 card.append(node('div','loan-meta',(borrowed?'빌린 날짜: ':'빌려준 날짜: ')+r.date+(r.due?' · '+(borrowed?'갚을':'돌려받을')+' 예정일: '+r.due:'')+(r.memo?' · '+r.memo:'')));
 const amounts=node('div','loan-amounts');[[(borrowed?'빌린 금액':'빌려준 금액'),r.amount],[(borrowed?'갚은 금액':'돌려받은 금액'),r.amount-rem],[(borrowed?'갚을 금액':'받을 금액'),rem]].forEach(([k,v])=>{const x=node('div');x.append(node('small','',k),node('b','',fmt(v)));amounts.append(x)});card.append(amounts);
-const actions=node('div','loan-actions');if(!done){const repay=node('button','loan-repay-toggle',borrowed?'↩️ 내가 갚은 메소 등록':'↩️ 돌려받은 메소 등록');repay.type='button';repay.onclick=()=>{const old=card.querySelector('.loan-repay-form');if(old){old.remove();return}const form=node('form','loan-repay-form');const amtLabel=node('label','',borrowed?'내가 갚은 메소':'돌려받은 메소');const amountInput=node('input');amountInput.type='text';amountInput.inputMode='numeric';amountInput.placeholder='금액 입력';amountInput.required=true;amtLabel.append(amountInput);const dateLabel=node('label','',borrowed?'갚은 날짜':'돌려받은 날짜');const dateInput=node('input');dateInput.type='date';dateInput.value=today();dateInput.required=true;dateLabel.append(dateInput);const submit=node('button','loan-primary','상환 저장');submit.type='submit';form.append(amtLabel,dateLabel,submit);form.onsubmit=e=>{e.preventDefault();const value=number(amountInput.value);if(!Number.isSafeInteger(value)||value<=0||value>remaining(r)){alert('남은 미상환 금액 이하의 올바른 메소를 입력해 주세요.');return}r.payments=r.payments||[];r.payments.push({amount:value,date:dateInput.value});save();render()};card.append(form);amountInput.focus()};actions.append(repay)}
+const actions=node('div','loan-actions');
+const editBtn=node('button','loan-edit-toggle','✏️ 수정');editBtn.type='button';
+editBtn.onclick=()=>{
+  const old=card.querySelector('.loan-edit-form');if(old){old.remove();return}
+  const form=node('form','loan-form loan-edit-form');form.style.marginTop='12px';
+  function field(labelText,kind,value,required){const label=node('label','',labelText),input=node('input');input.type=kind;input.value=value??'';if(required)input.required=true;label.append(input);form.append(label);return input}
+  const creditorInput=field('채권자 닉네임','text',r.creditor||(borrowed?r.person:'나'),true);
+  const debtorInput=field('채무자 닉네임','text',r.debtor||(borrowed?'나':r.person),true);
+  const amountInput=field(borrowed?'빌린 메소':'빌려준 메소','text',Number(r.amount).toLocaleString('ko-KR'),true);amountInput.inputMode='numeric';
+  const amountPreview=node('span','loan-amount-korean',loanKoreanAmount(r.amount));amountInput.parentElement.append(amountPreview);
+  amountInput.addEventListener('input',()=>{const n=number(amountInput.value);amountInput.value=n?n.toLocaleString('ko-KR'):'';amountPreview.textContent=loanKoreanAmount(n)});
+  const dateInput=field(borrowed?'빌린 날짜':'빌려준 날짜','date',r.date,true);
+  const dueInput=field(borrowed?'갚을 예정일':'돌려받을 예정일','date',r.due||'',false);
+  const memoInput=field('메모','text',r.memo||'',false);memoInput.parentElement.classList.add('loan-wide');
+  const saveBtn=node('button','loan-primary','수정 저장');saveBtn.type='submit';saveBtn.classList.add('loan-wide');form.append(saveBtn);
+  const cancelBtn=node('button','','취소');cancelBtn.type='button';cancelBtn.className='loan-wide';cancelBtn.style.cssText='border:1px solid #ead3dc;border-radius:10px;padding:10px;background:white;color:#805e6d';cancelBtn.onclick=()=>form.remove();form.append(cancelBtn);
+  form.onsubmit=e=>{e.preventDefault();const amount=number(amountInput.value);const paid=(r.payments||[]).reduce((sum,p)=>sum+Number(p.amount||0),0);
+    if(!creditorInput.value.trim()||!debtorInput.value.trim()||!dateInput.value||!Number.isSafeInteger(amount)||amount<=0){alert('닉네임, 날짜, 메소 금액을 확인해 주세요.');return}
+    if(amount<paid){alert('이미 상환한 '+fmt(paid)+'보다 대출 금액을 작게 수정할 수 없어요.');return}
+    r.creditor=creditorInput.value.trim();r.debtor=debtorInput.value.trim();r.person=borrowed?r.creditor:r.debtor;r.amount=amount;r.date=dateInput.value;r.due=dueInput.value;r.memo=memoInput.value.trim();save();render();
+  };
+  card.append(form);creditorInput.focus();
+};actions.append(editBtn);
+if(!done){const repay=node('button','loan-repay-toggle',borrowed?'↩️ 내가 갚은 메소 등록':'↩️ 돌려받은 메소 등록');repay.type='button';repay.onclick=()=>{const old=card.querySelector('.loan-repay-form');if(old){old.remove();return}const form=node('form','loan-repay-form');const amtLabel=node('label','',borrowed?'내가 갚은 메소 (아이템 환산 금액 포함)':'돌려받은 메소 (아이템 환산 금액 포함)');const amountInput=node('input');amountInput.type='text';amountInput.inputMode='numeric';amountInput.placeholder='메소 또는 아이템의 환산 금액';amountInput.required=true;amtLabel.append(amountInput);const dateLabel=node('label','',borrowed?'갚은 날짜':'돌려받은 날짜');const dateInput=node('input');dateInput.type='date';dateInput.value=today();dateInput.required=true;dateLabel.append(dateInput);const memoLabel=node('label','loan-repay-memo-label','상환 메모 (선택)');const memoInput=node('textarea');memoInput.rows=2;memoInput.placeholder='예: 메소 5억 + 아이템(리스트레인트 링) 5억 상당으로 상환';memoLabel.append(memoInput);const submit=node('button','loan-primary','상환 저장');submit.type='submit';form.append(amtLabel,dateLabel,memoLabel,submit);form.onsubmit=e=>{e.preventDefault();const value=number(amountInput.value);if(!Number.isSafeInteger(value)||value<=0||value>remaining(r)){alert('남은 미상환 금액 이하의 올바른 메소 환산 금액을 입력해 주세요.');return}r.payments=r.payments||[];r.payments.push({amount:value,date:dateInput.value,memo:memoInput.value.trim()});save();render()};card.append(form);amountInput.focus()};actions.append(repay)}
 const del=node('button','','삭제');del.type='button';del.onclick=()=>{if(confirm(r.person+'님의 대출 기록과 상환 내역을 모두 삭제할까요?')){records=records.filter(x=>x.id!==r.id);save();render()}};actions.append(del);card.append(actions);
-if((r.payments||[]).length){const hist=node('div','loan-history');hist.append(node('strong','',borrowed?'내가 갚은 기록':'돌려받은 기록'));r.payments.forEach((p,i)=>{const line=node('div','',p.date+' · '+fmt(p.amount)+' ');const remove=node('button','','취소');remove.type='button';remove.style.cssText='margin-left:8px;border:0;background:transparent;color:#d65b7c;cursor:pointer';remove.onclick=()=>{if(confirm('이 상환 내역을 삭제할까요?')){r.payments.splice(i,1);save();render()}};line.append(remove);hist.append(line)});card.append(hist)}
+if((r.payments||[]).length){const hist=node('div','loan-history');hist.append(node('strong','',borrowed?'내가 갚은 기록':'돌려받은 기록'));r.payments.forEach((p,i)=>{const line=node('div','loan-payment-line');const info=node('span','',p.date+' · '+fmt(p.amount));line.append(info);if(p.memo){line.append(node('div','loan-payment-memo','📝 '+p.memo))}const remove=node('button','','취소');remove.type='button';remove.style.cssText='margin-left:8px;border:0;background:transparent;color:#d65b7c;cursor:pointer';remove.onclick=()=>{if(confirm('이 상환 내역을 삭제할까요?')){r.payments.splice(i,1);save();render()}};line.append(remove);hist.append(line)});card.append(hist)}
 wrap.append(card)
 })
 }
 $('loanDate').value=today();$('loanLendMode').addEventListener('click',()=>setMode('lent'));$('loanBorrowMode').addEventListener('click',()=>setMode('borrowed'));
-$('loanAmount').addEventListener('input',e=>{const n=number(e.target.value);e.target.value=n?n.toLocaleString('ko-KR'):''});
-$('loanForm').addEventListener('submit',e=>{e.preventDefault();const creditor=$('loanCreditor').value.trim(),debtor=$('loanDebtor').value.trim(),person=direction==='borrowed'?creditor:debtor,amount=number($('loanAmount').value),date=$('loanDate').value;if(!creditor||!debtor||!date||!Number.isSafeInteger(amount)||amount<=0){alert('채권자·채무자 닉네임, 날짜, 올바른 메소 금액을 입력해 주세요.');return}records.push({id:Date.now().toString(36)+'-'+Math.random().toString(36).slice(2),direction,person,creditor,debtor,amount,date,due:$('loanDue').value,memo:$('loanMemo').value.trim(),payments:[]});save();e.target.reset();$('loanDate').value=today();render()});
+function loanKoreanAmount(n){
+  if(!Number.isSafeInteger(n)||n<=0)return '0억 0000만';
+  const eok=Math.floor(n/100000000),man=Math.floor(n%100000000/10000),rest=n%10000;
+  return eok.toLocaleString('ko-KR')+'억 '+String(man).padStart(4,'0')+'만'+(rest?' '+String(rest).padStart(4,'0'):'');
+}
+function updateLoanAmountPreview(){ $('loanAmountKorean').textContent=loanKoreanAmount(number($('loanAmount').value)); }
+$('loanAmount').addEventListener('input',e=>{const n=number(e.target.value);e.target.value=n?n.toLocaleString('ko-KR'):'';updateLoanAmountPreview()});
+$('loanForm').addEventListener('submit',e=>{e.preventDefault();const creditor=$('loanCreditor').value.trim(),debtor=$('loanDebtor').value.trim(),person=direction==='borrowed'?creditor:debtor,amount=number($('loanAmount').value),date=$('loanDate').value;if(!creditor||!debtor||!date||!Number.isSafeInteger(amount)||amount<=0){alert('채권자·채무자 닉네임, 날짜, 올바른 메소 금액을 입력해 주세요.');return}records.push({id:Date.now().toString(36)+'-'+Math.random().toString(36).slice(2),direction,person,creditor,debtor,amount,date,due:$('loanDue').value,memo:$('loanMemo').value.trim(),payments:[]});save();e.target.reset();updateLoanAmountPreview();$('loanDate').value=today();render()});
 $('loanFilter').addEventListener('change',render);setMode('lent');render();
 })();
 </script>
@@ -12301,6 +12369,27 @@ $('loanFilter').addEventListener('change',render);setMode('lent');render();
   document.addEventListener('visibilitychange',function(){if(!document.hidden)check()});
   window.addEventListener('focus',check);
   setInterval(check,30000);
+})();
+</script>
+<script id="rice-sales-script">
+(function(){
+'use strict';
+const key='maple_rice_sales_v1';const el=id=>document.getElementById(id);const won=n=>Number(n||0).toLocaleString('ko-KR');
+const parse=v=>Number(String(v||'').replace(/[^0-9]/g,''));
+const fmtMeso=n=>{n=Number(n||0);return Math.floor(n/1e8).toLocaleString('ko-KR')+'억 '+String(Math.floor(n%1e8/1e4)).padStart(4,'0')+'만'+(n%1e4?' '+String(n%1e4).padStart(4,'0'):'')};
+let rows=[];let editing=null;try{const raw=JSON.parse(localStorage.getItem(key)||'[]');if(Array.isArray(raw))rows=raw}catch(e){}
+const save=()=>{try{localStorage.setItem(key,JSON.stringify(rows))}catch(e){alert('저장에 실패했어요. 브라우저 저장 공간을 확인해 주세요.')}};
+const localDate=()=>{const d=new Date();return [d.getFullYear(),String(d.getMonth()+1).padStart(2,'0'),String(d.getDate()).padStart(2,'0')].join('-')};
+const create=(tag,cls,txt)=>{const x=document.createElement(tag);if(cls)x.className=cls;if(txt!==undefined)x.textContent=txt;return x};
+function preview(){const m=parse(el('riceMeso').value),w=parse(el('riceWon').value);el('riceMesoPreview').textContent=fmtMeso(m);el('riceRate').textContent='1억 메소당 판매 단가: '+(m&&w?(w*1e8/m).toLocaleString('ko-KR',{maximumFractionDigits:2})+'원':'-')}
+function reset(){editing=null;el('riceForm').reset();el('riceDate').value=localDate();el('riceSubmit').textContent='💵 쌀판매 기록 저장';el('riceCancelEdit').style.display='none';preview()}
+function render(){const sumM=rows.reduce((a,r)=>a+r.meso,0),sumW=rows.reduce((a,r)=>a+r.won,0);const stats=el('riceStats');stats.replaceChildren();[['누적 판매 메소',fmtMeso(sumM)],['누적 현금 수령액',won(sumW)+'원'],['총 판매 건수',won(rows.length)+'건']].forEach(([a,b])=>{const box=create('div','rice-stat');box.append(create('small','',a),create('strong','',b));stats.append(box)});
+const wrap=el('riceRecords');wrap.replaceChildren();if(!rows.length){wrap.append(create('div','rice-empty','아직 등록된 쌀판매 내역이 없어요.'));return}
+[...rows].sort((a,b)=>b.date.localeCompare(a.date)||b.created-a.created).forEach(r=>{const card=create('article','rice-entry'),top=create('div','rice-entry-top'),heading=create('strong','',r.date+' · '+(r.buyer||'구매자 미입력')),actions=create('div');const edit=create('button','','✏️ 수정'),del=create('button','','삭제');edit.type=del.type='button';edit.onclick=()=>{editing=r.id;el('riceMeso').value=won(r.meso);el('riceWon').value=won(r.won);el('riceDate').value=r.date;el('riceBuyer').value=r.buyer||'';el('riceMemo').value=r.memo||'';el('riceSubmit').textContent='✏️ 수정 저장';el('riceCancelEdit').style.display='block';preview();el('riceForm').scrollIntoView({behavior:'smooth',block:'center'})};del.onclick=()=>{if(confirm('이 쌀판매 내역을 삭제할까요?')){rows=rows.filter(x=>x.id!==r.id);save();if(editing===r.id)reset();render()}};actions.append(edit,del);top.append(heading,actions);card.append(top,create('p','','판매 메소: '+fmtMeso(r.meso)+' · 받은 현금: '+won(r.won)+'원'),create('p','','1억당 '+(r.won*1e8/r.meso).toLocaleString('ko-KR',{maximumFractionDigits:2})+'원'));if(r.memo)card.append(create('p','','📝 '+r.memo));wrap.append(card)})}
+['riceMeso','riceWon'].forEach(id=>el(id).addEventListener('input',e=>{const v=parse(e.target.value);e.target.value=v?won(v):'';preview()}));
+el('riceCancelEdit').onclick=reset;
+el('riceForm').addEventListener('submit',e=>{e.preventDefault();const meso=parse(el('riceMeso').value),cash=parse(el('riceWon').value),date=el('riceDate').value;if(!Number.isSafeInteger(meso)||meso<=0||!Number.isSafeInteger(cash)||cash<=0||!date){alert('판매 메소, 받은 원화 금액, 날짜를 올바르게 입력해 주세요.');return}const entry={id:editing||Date.now().toString(36)+'-'+Math.random().toString(36).slice(2),meso,won:cash,date,buyer:el('riceBuyer').value.trim(),memo:el('riceMemo').value.trim(),created:Date.now()};if(editing){const idx=rows.findIndex(x=>x.id===editing);if(idx>=0){entry.created=rows[idx].created;rows[idx]=entry}else rows.push(entry)}else rows.push(entry);save();reset();render()});
+reset();render();
 })();
 </script>
 </body>
