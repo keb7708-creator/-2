@@ -7673,6 +7673,15 @@ button,
 .monthly-loot-button{background:linear-gradient(180deg,#fff1f7,#ffe2ee)!important;border:1px solid #f3b7d0!important;color:#b73f70!important;font-weight:900!important}
 .monthly-loot-button:hover{filter:brightness(.98)}
 </style>
+<style>
+/* 판매금액을 실수령 금액 위에 표시 */
+.sale-price-summary{display:flex!important;flex-direction:column!important;align-items:stretch!important;justify-content:center!important;gap:9px!important}
+.sale-price-gross-row,.sale-price-net-row{display:flex;align-items:center;justify-content:space-between;gap:10px;min-width:0}
+.sale-price-gross-row{padding-bottom:9px;border-bottom:1px solid #f0dce3}
+.sale-price-gross-row b{font-size:20px;color:#745b69;white-space:nowrap}
+.sale-price-net-row b{font-size:24px;color:#ef4e7a;white-space:nowrap}
+@media(max-width:600px){.sale-price-gross-row,.sale-price-net-row{flex-wrap:wrap}.sale-price-gross-row b,.sale-price-net-row b{font-size:19px}}
+</style>
 </head>
 
 <body>
@@ -10406,7 +10415,8 @@ function syncLootEditorState(){
   const status=document.getElementById('lootEditStatus')?.value||'unsold';
   const price=document.getElementById('lootEditPrice');
   if(price){
-    price.disabled=status!=='sold';
+    // 미판매 상태에서도 판매 예정 금액을 입력할 수 있도록 유지합니다.
+    price.disabled=false;
     if(status!=='sold') price.value='';
   }
   updateLootMyShare();
@@ -10547,7 +10557,12 @@ function saveBossLootRecords(){
 
 /* 판매가 입력 즉시 정산 미리보기 */
 document.addEventListener('input',e=>{
-  if(e.target?.id==='lootEditPrice') updateLootMyShare();
+  if(e.target?.id==='lootEditPrice') {
+    const status=document.getElementById('lootEditStatus');
+    // 금액을 입력하면 판매완료로 전환해 정산액을 즉시 계산합니다.
+    if(status && parseMesoInput(e.target.value)>0) status.value='sold';
+    updateLootMyShare();
+  }
 });
 </script>
 
@@ -10967,9 +10982,10 @@ function adjustLootParty(delta){
         </div>
         <small id="salePriceFeeDetail">수수료 0 메소 · 실수령 0 메소</small>
       </div>
-      <div class="sale-price-net">
-        <span>실수령 금액 <small>(수수료 차감 후)</small></span>
-        <b id="salePriceNetAmount">0 메소</b>
+      <div class="sale-price-net sale-price-summary">
+        <div class="sale-price-gross-row"><span>판매금액</span><b id="salePriceGrossAmount">0 메소</b></div>
+        <div class="sale-price-net-row"><span>실수령 금액 <small>(수수료 차감 후)</small></span>
+        <b id="salePriceNetAmount">0 메소</b></div>
       </div>
     </div>
 
@@ -11274,6 +11290,8 @@ function updateSalePricePreview(){
     totalEl.textContent=saleDistributionEqual?'동등 분배':`${Number(total.toFixed(2))} / 10`;
     totalEl.style.color=(saleDistributionEqual||Math.abs(total-10)<0.001)?'#ef4e7a':'#c07a34';
   }
+  const grossEl=document.getElementById('salePriceGrossAmount');
+  if(grossEl)grossEl.textContent=fmtSaleMeso(gross);
   const netEl=document.getElementById('salePriceNetAmount');
   if(netEl)netEl.textContent=fmtSaleMeso(net);
   const feeDetail=document.getElementById('salePriceFeeDetail');
@@ -12120,6 +12138,55 @@ window.syncAllBossSchedulers=async function(){
 };
 </script>
 
+
+<style id="desktop-side-calculator-style">
+/* 데스크톱 오른쪽 여백 전용 계산기 */
+#desktopSideCalculator{display:none;position:fixed;left:calc(50% + 530px);top:190px;width:290px;z-index:40;padding:17px;border:1px solid #f2d3df;border-radius:22px;background:linear-gradient(155deg,#fffdfd,#fff3f8);box-shadow:0 10px 30px rgba(125,70,91,.12);font-family:inherit;color:#42323c}
+#desktopSideCalculator .dcalc-title{font-size:17px;font-weight:900;margin-bottom:12px}
+#desktopSideCalculator .dcalc-screen{background:#fff;border:1px solid #eed9e2;border-radius:13px;padding:11px 12px;text-align:right;min-height:75px;overflow:hidden}
+#desktopSideCalculator .dcalc-expression{font-size:12px;color:#9d8492;min-height:18px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#desktopSideCalculator .dcalc-result{font-size:24px;font-weight:900;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-variant-numeric:tabular-nums}
+#desktopSideCalculator .dcalc-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px;margin-top:12px}
+#desktopSideCalculator .dcalc-grid button{width:100%;height:46px;padding:0;border:1px solid #f0e0e6;border-radius:12px;background:#fff;color:#493844;font-weight:800;font-size:17px}
+#desktopSideCalculator .dcalc-grid button.operator{background:#ffe9f0;color:#d64e7d}
+#desktopSideCalculator .dcalc-grid button.equals{background:#ff6996;color:white;border-color:#ff6996}
+#desktopSideCalculator .dcalc-grid button:active{transform:scale(.96)}
+#desktopSideCalculator .dcalc-help{font-size:11px;color:#a18494;margin-top:10px;text-align:center}
+@media(min-width:1650px){#desktopSideCalculator{display:block}}
+</style>
+
+<aside id="desktopSideCalculator" aria-label="데스크톱 계산기">
+  <div class="dcalc-title">🧮 메소 계산기</div>
+  <div class="dcalc-screen" aria-live="polite"><div class="dcalc-expression" id="dcalcExpression">&nbsp;</div><div class="dcalc-result" id="dcalcResult">0</div></div>
+  <div class="dcalc-grid">
+    <button type="button" data-calc="clear" class="operator">AC</button><button type="button" data-calc="back" class="operator">⌫</button><button type="button" data-calc="percent" class="operator">%</button><button type="button" data-calc="/" class="operator">÷</button>
+    <button type="button" data-calc="7">7</button><button type="button" data-calc="8">8</button><button type="button" data-calc="9">9</button><button type="button" data-calc="*" class="operator">×</button>
+    <button type="button" data-calc="4">4</button><button type="button" data-calc="5">5</button><button type="button" data-calc="6">6</button><button type="button" data-calc="-" class="operator">−</button>
+    <button type="button" data-calc="1">1</button><button type="button" data-calc="2">2</button><button type="button" data-calc="3">3</button><button type="button" data-calc="+" class="operator">+</button>
+    <button type="button" data-calc="00">00</button><button type="button" data-calc="0">0</button><button type="button" data-calc=".">.</button><button type="button" data-calc="=" class="equals">=</button>
+  </div>
+  <div class="dcalc-help">숫자 · 사칙연산 · 백분율</div>
+</aside>
+<script id="desktop-side-calculator-script">
+(function(){
+ const root=document.getElementById('desktopSideCalculator');
+ if(!root)return;
+ const out=root.querySelector('#dcalcResult'),hist=root.querySelector('#dcalcExpression');
+ let current='0',previous=null,operator=null,resetNext=false;
+ const pretty=n=>{const parts=String(n).split('.');return parts[0].replace(/\B(?=(\d{3})+(?!\d))/g,',')+(parts.length>1?'.'+parts[1]:'')};
+ function show(){out.textContent=pretty(current);hist.textContent=previous!==null&&operator!==null?pretty(previous)+' '+({'/':'÷','*':'×','-':'−','+':'+'}[operator]):' '}
+ function calculate(){if(previous===null||operator===null)return;const a=Number(previous),b=Number(current);let n=operator==='+'?a+b:operator==='-'?a-b:operator==='*'?a*b:b===0?NaN:a/b;current=Number.isFinite(n)?String(Number(n.toPrecision(12))):'오류';previous=null;operator=null;resetNext=true}
+ root.addEventListener('click',e=>{const btn=e.target.closest('button[data-calc]');if(!btn)return;const key=btn.dataset.calc;
+ if(key==='clear'){current='0';previous=null;operator=null;resetNext=false}
+ else if(key==='back'){if(resetNext||current==='오류'){current='0';resetNext=false}else current=current.length>1?current.slice(0,-1):'0'}
+ else if(key==='percent'){current=String(Number(current)/100)}
+ else if(key==='='){calculate()}
+ else if(['+','-','*','/'].includes(key)){if(previous!==null&&!resetNext)calculate();previous=current;operator=key;resetNext=true}
+ else if(key==='.'){if(resetNext||current==='오류'){current='0';resetNext=false}if(!current.includes('.'))current+='.'}
+ else{if(resetNext||current==='0'||current==='오류'){current=key==='00'?'0':key;resetNext=false}else if(current.replace(/\D/g,'').length<16)current+=key}
+ show();});show();
+})();
+</script>
 </body>
 
 </html>
