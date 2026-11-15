@@ -7682,6 +7682,21 @@ button,
 .sale-price-net-row b{font-size:24px;color:#ef4e7a;white-space:nowrap}
 @media(max-width:600px){.sale-price-gross-row,.sale-price-net-row{flex-wrap:wrap}.sale-price-gross-row b,.sale-price-net-row b{font-size:19px}}
 </style>
+<style id="loan-tab-style">
+.primary-tabs{grid-template-columns:repeat(4,minmax(0,1fr))!important}
+.loan-view{padding:12px 22px 30px;min-height:440px}
+.loan-panel{padding:22px;border:1px solid #f0d9df;border-radius:23px;background:linear-gradient(135deg,#fffdfa,#fff5f8);box-shadow:0 5px 16px rgba(110,69,88,.05)}
+.loan-empty{margin:30px auto 15px;max-width:520px;padding:42px 18px;text-align:center;border:2px dashed #efcfdc;border-radius:20px;background:#fff}
+.loan-empty-icon{font-size:40px;margin-bottom:10px}
+.loan-empty strong{font-size:21px;color:#36303b}
+.loan-empty p{font-size:14px;line-height:1.8;color:#867783}
+@media(max-width:760px){.primary-tabs{grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:5px!important}.primary-tab{font-size:12px!important;padding:11px 3px!important}.loan-view{padding:10px}.loan-panel{padding:14px}}
+</style>
+<style id="loan-direction-style">
+.loan-direction-tabs{display:flex;gap:9px;margin:14px 0 10px}.loan-direction{flex:1;border:1px solid #efd7e0;border-radius:12px;background:#fff;color:#8a6474;padding:12px;font-weight:900;cursor:pointer}.loan-direction.active{background:#ff7195;color:#fff;border-color:#ff7195}.loan-entry.borrowed{border-color:#cdddf5;background:#fbfdff}.loan-entry.borrowed .loan-chip:not(.closed){background:#eaf2ff;color:#3975b6}.loan-stat.borrowed-stat{border-color:#d4e4fa}.loan-stat.borrowed-stat strong{color:#3975b6}@media(max-width:640px){.loan-direction{font-size:12px}}
+</style><style id="loan-manager-style">
+.loan-summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;margin:18px 0}.loan-stat{background:#fff;border:1px solid #f1dce4;border-radius:15px;padding:14px 10px}.loan-stat small{display:block;color:#907a85;font-weight:800;font-size:12px}.loan-stat strong{display:block;margin-top:7px;color:#f05282;font-size:17px;overflow-wrap:anywhere}.loan-form{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px;background:#fff;border:1px solid #f0dce3;padding:15px;border-radius:17px}.loan-form label,.loan-repay-form label{font-size:12px;font-weight:850;color:#76616d;display:flex;flex-direction:column;gap:6px}.loan-form input,.loan-repay-form input{min-width:0;width:100%;border:1px solid #e8d8df;border-radius:10px;padding:11px;background:#fff}.loan-wide{grid-column:1/-1}.loan-primary{border:0;background:#ff6e94;color:#fff;font-weight:900;border-radius:11px;padding:12px;cursor:pointer}.loan-list-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:23px}.loan-list-head h3{margin:0;font-size:18px}.loan-list-head select{width:auto;padding:9px}.loan-records{display:grid;gap:12px;margin-top:13px}.loan-entry{background:#fff;border:1px solid #eedce4;border-radius:15px;padding:14px}.loan-entry-top{display:flex;justify-content:space-between;gap:10px;align-items:center}.loan-entry-top strong{font-size:17px}.loan-chip{font-size:11px;border-radius:99px;background:#fff0d8;color:#9b6c23;padding:5px 9px;font-weight:900}.loan-chip.closed{background:#e9f8ed;color:#318b50}.loan-meta{font-size:12px;color:#8c7a83;margin:7px 0;overflow-wrap:anywhere}.loan-amounts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;margin:12px 0}.loan-amounts div{background:#fff6f9;border-radius:10px;padding:9px 7px;overflow-wrap:anywhere}.loan-amounts small{display:block;font-size:11px;color:#967b87}.loan-amounts b{display:block;font-size:13px;margin-top:4px}.loan-actions{display:flex;gap:8px;flex-wrap:wrap}.loan-actions button{border:1px solid #ecd6df;background:#fff7fa;border-radius:9px;padding:8px 11px;color:#9a4764;font-weight:800}.loan-actions .loan-repay-toggle{background:#ff7195;color:white;border-color:#ff7195}.loan-repay-form{display:grid;grid-template-columns:1fr 1fr auto;gap:8px;align-items:end;margin-top:12px;padding:11px;border-radius:12px;background:#fff6f9}.loan-history{font-size:12px;color:#786b71;margin-top:10px}.loan-history div{padding:4px 0}.loan-storage-note{font-size:11px;color:#9b8790;margin-top:16px}.loan-empty-state{padding:25px;text-align:center;color:#9b8790;border:1px dashed #eacbd7;border-radius:14px}.loan-error{color:#c83957;font-size:12px;margin-top:8px}@media(max-width:640px){.loan-summary{grid-template-columns:1fr}.loan-form{grid-template-columns:1fr}.loan-form>*{grid-column:1/-1}.loan-repay-form{grid-template-columns:1fr 1fr}.loan-repay-form button{grid-column:1/-1}.loan-amounts b{font-size:11px}}
+</style>
 </head>
 
 <body>
@@ -7782,6 +7797,7 @@ button,
       role="tab" aria-selected="false" aria-controls="settlementView" onclick="setMainTab('settlement')">🧾 정산</button>
     <button id="scheduleTabBtn" class="primary-tab" type="button"
       role="tab" aria-selected="false" aria-controls="scheduleView" onclick="setMainTab('schedule')">📅 일정</button>
+    <button id="loanTabBtn" class="primary-tab" type="button" role="tab" aria-selected="false" aria-controls="loanView" onclick="setMainTab('loan')">💸 대출</button>
   </div>
 
   <div id="homeView" class="app-tab-view active">
@@ -7904,6 +7920,25 @@ button,
 </footer>
 
   </div>
+
+  <section id="loanView" class="app-tab-view loan-view" aria-labelledby="loanTabBtn">
+    <div class="loan-panel">
+      <div class="settlement-heading"><h2>💸 대출</h2><small>대출 관리 전용 화면</small></div>
+      <div class="loan-summary" id="loanSummary"></div>
+      <div class="loan-direction-tabs"><button type="button" id="loanLendMode" class="loan-direction active">💰 내가 빌려줌</button><button type="button" id="loanBorrowMode" class="loan-direction">💸 내가 빌림</button></div><form id="loanForm" class="loan-form">
+        <label id="loanCreditorLabel">채권자 닉네임 (빌려준 사람)<input id="loanCreditor" maxlength="40" placeholder="채권자 캐릭터 닉네임" required></label>
+        <label id="loanDebtorLabel">채무자 닉네임 (빌린 사람)<input id="loanDebtor" maxlength="40" placeholder="채무자 캐릭터 닉네임" required></label>
+        <label id="loanAmountLabel">빌려준 메소<input id="loanAmount" type="text" inputmode="numeric" placeholder="예: 1,000,000,000" required></label>
+        <label id="loanDateLabel">빌려준 날짜<input id="loanDate" type="date" required></label>
+        <label id="loanDueLabel">돌려받을 예정일 (선택)<input id="loanDue" type="date"></label>
+        <label class="loan-wide">메모 (선택)<input id="loanMemo" maxlength="150" placeholder="대출 사유 등"></label>
+        <button id="loanSubmit" class="loan-primary loan-wide" type="submit">💰 빌려준 메소 등록</button>
+      </form>
+      <div class="loan-list-head"><h3>📒 대출 내역</h3><select id="loanFilter" aria-label="대출 상태 필터"><option value="all">전체</option><option value="open">미상환</option><option value="closed">상환완료</option><option value="lent">빌려준 내역</option><option value="borrowed">빌린 내역</option></select></div>
+      <div id="loanRecords" class="loan-records"></div>
+      <p class="loan-storage-note">기록은 이 브라우저에 자동 저장돼요. 브라우저 데이터를 삭제하면 기록이 사라질 수 있어요.</p>
+    </div>
+  </section>
 
   <section id="settlementView" class="app-tab-view settlement-view" aria-labelledby="settlementTabBtn">
     <div class="settlement-panel">
@@ -8392,6 +8427,36 @@ data.chars.forEach(c=>{
     }
   });
 });
+// 매주 목요일 00:00 (브라우저 현지 시간) 주간 보스 자동 초기화.
+// 초기 실행 시에는 기존 데이터를 보존하고 기준 주차만 기록합니다.
+const AUTO_WEEK_RESET_KEY = KEY + '_thursdayResetWeek_v1';
+function currentThursdayWeekKey(now=new Date()){
+  const d=new Date(now.getFullYear(),now.getMonth(),now.getDate());
+  d.setDate(d.getDate()-((d.getDay()+3)%7)); // 목요일=0, 수요일=6
+  return [d.getFullYear(),String(d.getMonth()+1).padStart(2,'0'),String(d.getDate()).padStart(2,'0')].join('-');
+}
+function applyAutomaticWeeklyReset(){
+  const week=currentThursdayWeekKey();
+  const previous=localStorage.getItem(AUTO_WEEK_RESET_KEY);
+  if(!previous){localStorage.setItem(AUTO_WEEK_RESET_KEY,week);return false;}
+  if(previous===week)return false;
+  // 지난주 드랍 아이템은 정산 이력에 남기고 홈에서만 보관 처리.
+  data.chars.forEach(c=>(c.bosses||[]).forEach(b=>{
+    b.status='todo';
+    b.time='';
+    if(Array.isArray(b.lootRecords))b.lootRecords.forEach(item=>{
+      if(item&&!item.archived){item.archived=true;item.archivedAt=ymdLocal(new Date());}
+    });
+    b.lootItems='';
+    b.lootMemo='';
+  }));
+  save();
+  localStorage.setItem(AUTO_WEEK_RESET_KEY,week);
+  if(typeof render==='function')render();
+  if(typeof injectLootButtons==='function')injectLootButtons();
+  if(typeof renderSettlement==='function')renderSettlement();
+  return true;
+}
 function save(){localStorage.setItem(KEY,JSON.stringify(data));}
 function statusText(s){return s==='done'?'완료':s==='plan'?'예정':'미완료'}
 function nextStatus(s){
@@ -9685,18 +9750,20 @@ function importData(){
 }
 
 function setMainTab(tab){
-  const validTabs = ['home','settlement','schedule'];
+  const validTabs = ['home','settlement','schedule','loan'];
   if(!validTabs.includes(tab)) tab = 'home';
 
   const buttons = {
     home: document.getElementById('homeTabBtn'),
     settlement: document.getElementById('settlementTabBtn'),
-    schedule: document.getElementById('scheduleTabBtn')
+    schedule: document.getElementById('scheduleTabBtn'),
+    loan: document.getElementById('loanTabBtn')
   };
   const views = {
     home: document.getElementById('homeView'),
     settlement: document.getElementById('settlementView'),
-    schedule: document.getElementById('scheduleView')
+    schedule: document.getElementById('scheduleView'),
+    loan: document.getElementById('loanView')
   };
 
   validTabs.forEach(name=>{
@@ -12185,6 +12252,55 @@ window.syncAllBossSchedulers=async function(){
  else if(key==='.'){if(resetNext||current==='오류'){current='0';resetNext=false}if(!current.includes('.'))current+='.'}
  else{if(resetNext||current==='0'||current==='오류'){current=key==='00'?'0':key;resetNext=false}else if(current.replace(/\D/g,'').length<16)current+=key}
  show();});show();
+})();
+</script>
+<script id="loan-manager-script">
+(function(){
+'use strict';
+const KEY='maple_meso_loans_v1';
+const $=id=>document.getElementById(id);
+const fmt=n=>Math.round(n).toLocaleString('ko-KR')+' 메소';
+const today=()=>{const d=new Date();return [d.getFullYear(),String(d.getMonth()+1).padStart(2,'0'),String(d.getDate()).padStart(2,'0')].join('-')};
+const number=s=>Number(String(s||'').replace(/[^0-9]/g,''));
+let records=[];let direction='lent';
+try{const v=JSON.parse(localStorage.getItem(KEY)||'[]');if(Array.isArray(v))records=v}catch(e){}
+const type=r=>r.direction==='borrowed'?'borrowed':'lent';
+function save(){try{localStorage.setItem(KEY,JSON.stringify(records))}catch(e){alert('저장 공간에 문제가 있어 기록을 저장하지 못했어요.')}}
+function node(tag,cls,content){const el=document.createElement(tag);if(cls)el.className=cls;if(content!==undefined)el.textContent=content;return el}
+function remaining(r){return Math.max(0,r.amount-(r.payments||[]).reduce((s,p)=>s+p.amount,0))}
+function setMode(mode){direction=mode;$('loanLendMode').classList.toggle('active',mode==='lent');$('loanBorrowMode').classList.toggle('active',mode==='borrowed');const borrowed=mode==='borrowed';$('loanAmountLabel').firstChild.textContent=borrowed?'빌린 메소':'빌려준 메소';$('loanDateLabel').firstChild.textContent=borrowed?'빌린 날짜':'빌려준 날짜';$('loanDueLabel').firstChild.textContent=borrowed?'갚을 예정일 (선택)':'돌려받을 예정일 (선택)';$('loanSubmit').textContent=borrowed?'💸 빌린 메소 등록':'💰 빌려준 메소 등록'}
+function render(){
+const summary=$('loanSummary');summary.replaceChildren();
+for(const [dir,labels] of [['lent',['💰 총 빌려준 메소','💸 돌려받은 메소','📌 받을 메소']],['borrowed',['💙 총 빌린 메소','↩️ 내가 갚은 메소','📌 갚을 메소']]]){
+const subset=records.filter(r=>type(r)===dir);const total=subset.reduce((s,r)=>s+r.amount,0);const unpaid=subset.reduce((s,r)=>s+remaining(r),0);
+[[labels[0],total],[labels[1],total-unpaid],[labels[2],unpaid]].forEach(([name,value])=>{const el=node('div','loan-stat'+(dir==='borrowed'?' borrowed-stat':''));el.append(node('small','',name),node('strong','',fmt(value)));summary.append(el)})}
+const wrap=$('loanRecords');wrap.replaceChildren();const filter=$('loanFilter').value;
+const shown=records.filter(r=>filter==='all'||(filter==='closed'?remaining(r)===0:filter==='open'?remaining(r)>0:type(r)===filter)).sort((a,b)=>b.date.localeCompare(a.date));
+if(!shown.length){wrap.append(node('div','loan-empty-state','표시할 대출 기록이 없어요.'));return}
+shown.forEach(r=>{
+const borrowed=type(r)==='borrowed',rem=remaining(r),done=rem===0,card=node('article','loan-entry'+(borrowed?' borrowed':''));const top=node('div','loan-entry-top');top.append(node('strong','',(borrowed?'💙 빌린 내역':'💗 빌려준 내역')),node('span','loan-chip'+(done?' closed':''),done?'상환완료':'미상환'));card.append(top);
+card.append(node('div','loan-meta','채권자: '+(r.creditor||(borrowed?r.person:'나'))+' · 채무자: '+(r.debtor||(borrowed?'나':r.person))));
+card.append(node('div','loan-meta',(borrowed?'빌린 날짜: ':'빌려준 날짜: ')+r.date+(r.due?' · '+(borrowed?'갚을':'돌려받을')+' 예정일: '+r.due:'')+(r.memo?' · '+r.memo:'')));
+const amounts=node('div','loan-amounts');[[(borrowed?'빌린 금액':'빌려준 금액'),r.amount],[(borrowed?'갚은 금액':'돌려받은 금액'),r.amount-rem],[(borrowed?'갚을 금액':'받을 금액'),rem]].forEach(([k,v])=>{const x=node('div');x.append(node('small','',k),node('b','',fmt(v)));amounts.append(x)});card.append(amounts);
+const actions=node('div','loan-actions');if(!done){const repay=node('button','loan-repay-toggle',borrowed?'↩️ 내가 갚은 메소 등록':'↩️ 돌려받은 메소 등록');repay.type='button';repay.onclick=()=>{const old=card.querySelector('.loan-repay-form');if(old){old.remove();return}const form=node('form','loan-repay-form');const amtLabel=node('label','',borrowed?'내가 갚은 메소':'돌려받은 메소');const amountInput=node('input');amountInput.type='text';amountInput.inputMode='numeric';amountInput.placeholder='금액 입력';amountInput.required=true;amtLabel.append(amountInput);const dateLabel=node('label','',borrowed?'갚은 날짜':'돌려받은 날짜');const dateInput=node('input');dateInput.type='date';dateInput.value=today();dateInput.required=true;dateLabel.append(dateInput);const submit=node('button','loan-primary','상환 저장');submit.type='submit';form.append(amtLabel,dateLabel,submit);form.onsubmit=e=>{e.preventDefault();const value=number(amountInput.value);if(!Number.isSafeInteger(value)||value<=0||value>remaining(r)){alert('남은 미상환 금액 이하의 올바른 메소를 입력해 주세요.');return}r.payments=r.payments||[];r.payments.push({amount:value,date:dateInput.value});save();render()};card.append(form);amountInput.focus()};actions.append(repay)}
+const del=node('button','','삭제');del.type='button';del.onclick=()=>{if(confirm(r.person+'님의 대출 기록과 상환 내역을 모두 삭제할까요?')){records=records.filter(x=>x.id!==r.id);save();render()}};actions.append(del);card.append(actions);
+if((r.payments||[]).length){const hist=node('div','loan-history');hist.append(node('strong','',borrowed?'내가 갚은 기록':'돌려받은 기록'));r.payments.forEach((p,i)=>{const line=node('div','',p.date+' · '+fmt(p.amount)+' ');const remove=node('button','','취소');remove.type='button';remove.style.cssText='margin-left:8px;border:0;background:transparent;color:#d65b7c;cursor:pointer';remove.onclick=()=>{if(confirm('이 상환 내역을 삭제할까요?')){r.payments.splice(i,1);save();render()}};line.append(remove);hist.append(line)});card.append(hist)}
+wrap.append(card)
+})
+}
+$('loanDate').value=today();$('loanLendMode').addEventListener('click',()=>setMode('lent'));$('loanBorrowMode').addEventListener('click',()=>setMode('borrowed'));
+$('loanAmount').addEventListener('input',e=>{const n=number(e.target.value);e.target.value=n?n.toLocaleString('ko-KR'):''});
+$('loanForm').addEventListener('submit',e=>{e.preventDefault();const creditor=$('loanCreditor').value.trim(),debtor=$('loanDebtor').value.trim(),person=direction==='borrowed'?creditor:debtor,amount=number($('loanAmount').value),date=$('loanDate').value;if(!creditor||!debtor||!date||!Number.isSafeInteger(amount)||amount<=0){alert('채권자·채무자 닉네임, 날짜, 올바른 메소 금액을 입력해 주세요.');return}records.push({id:Date.now().toString(36)+'-'+Math.random().toString(36).slice(2),direction,person,creditor,debtor,amount,date,due:$('loanDue').value,memo:$('loanMemo').value.trim(),payments:[]});save();e.target.reset();$('loanDate').value=today();render()});
+$('loanFilter').addEventListener('change',render);setMode('lent');render();
+})();
+</script>
+<script id="thursday-weekly-auto-reset">
+(function(){
+  function check(){try{applyAutomaticWeeklyReset()}catch(e){console.error('주간 보스 자동 초기화 오류',e)}}
+  check();
+  document.addEventListener('visibilitychange',function(){if(!document.hidden)check()});
+  window.addEventListener('focus',check);
+  setInterval(check,30000);
 })();
 </script>
 </body>
