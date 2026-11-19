@@ -11104,7 +11104,7 @@ function adjustLootParty(delta){
       <div id="saleDistributionAutoHint" class="sale-distribution-auto-hint">
         <span class="auto-adjust-arrow">⇄</span>
         <b>자동 조정</b>
-        <span>한 명의 비율을 바꾸면 나머지 인원이 자동 조정되어 합계가 10이 됩니다.</span>
+        <span>한 명의 비율을 바꾸면 나머지 인원이 자동 조정되어 합계가 10(100%)이 됩니다.</span>
       </div>
     </section>
 
@@ -11162,14 +11162,14 @@ function parseDistributionRatio(raw,party){
 function ratioToUnits(raw,party){
   const parsed=parseDistributionRatio(raw,party);
   if(!parsed)return evenDistributionUnits(party);
-  if(Math.abs(parsed.sum-10)<0.001 && parsed.vals.every(v=>Number.isInteger(v)&&v>=0&&v<=10)) return parsed.vals;
+  if(Math.abs(parsed.sum-10)<0.001 && parsed.vals.every(v=>Number.isInteger(v*2)&&v>=0&&v<=10)) return parsed.vals;
   // 예전 50:50 같은 비율도 0~10 단위로 변환
-  let exact=parsed.vals.map(v=>v/parsed.sum*10);
+  let exact=parsed.vals.map(v=>v/parsed.sum*20);
   let ints=exact.map(v=>Math.floor(v));
-  let remain=10-ints.reduce((a,b)=>a+b,0);
+  let remain=20-ints.reduce((a,b)=>a+b,0);
   const order=exact.map((v,i)=>({i,f:v-Math.floor(v)})).sort((a,b)=>b.f-a.f);
   for(let k=0;k<remain;k++) ints[order[k%order.length].i]++;
-  return ints.map(v=>Math.max(0,Math.min(10,v)));
+  return ints.map(v=>Math.max(0,Math.min(20,v))/2);
 }
 
 function renderSaleDistribution(c,b,item){
@@ -11195,7 +11195,7 @@ function renderSaleDistribution(c,b,item){
     <strong>${i+1} (${escapeHtml(name)})</strong>
     <div class="dist-select-row">
       <select data-dist-index="${i}" onchange="changeSaleDistribution(${i},this.value)" ${saleDistributionEqual?'disabled':''}>
-        ${Array.from({length:11},(_,v)=>`<option value="${v}" ${Math.round(saleDistributionUnits[i])===v?'selected':''}>${v}</option>`).join('')}
+        ${Array.from({length:21},(_,k)=>k/2).map(v=>`<option value="${v}" ${Math.abs(saleDistributionUnits[i]-v)<0.001?'selected':''}>${v}</option>`).join('')}
       </select>
       <span class="dist-percent">${saleDistributionEqual?(100/party).toFixed(party===3?2:1).replace(/\.0+$/,''):(saleDistributionUnits[i]*10)}%</span>
     </div>
@@ -11208,7 +11208,7 @@ function renderSaleDistribution(c,b,item){
       hint.innerHTML='<span class="auto-adjust-arrow">⚖</span><b>동등 분배</b><span>파티 인원 모두가 같은 비율로 정산됩니다.</span>';
     }else if(party===2){
       hint.classList.remove('manual-mode');
-      hint.innerHTML='<span class="auto-adjust-arrow">⇄</span><b>자동 조정</b><span>한 명의 비율을 바꾸면 다른 한 명이 자동 조정되어 합계가 10이 됩니다.</span>';
+      hint.innerHTML='<span class="auto-adjust-arrow">⇄</span><b>자동 조정</b><span>한 명의 비율을 바꾸면 다른 한 명이 자동 조정되어 합계가 10(100%)이 됩니다.</span>';
     }else{
       hint.classList.add('manual-mode');
       hint.innerHTML='<span class="auto-adjust-arrow">✍</span><b>수동 선택</b><span>3인 이상은 각 인원의 비율을 직접 선택해 주세요. 합계는 10/10이어야 저장됩니다.</span>';
@@ -11234,7 +11234,7 @@ function toggleSaleDistributionEqual(checked){
 
   document.querySelectorAll('[data-dist-index]').forEach((el,i)=>{
     el.disabled=saleDistributionEqual;
-    if(!saleDistributionEqual) el.value=String(Math.round(saleDistributionUnits[i]||0));
+    if(!saleDistributionEqual) el.value=String((saleDistributionUnits[i]||0));
     const pct=el.closest('.sale-distribution-person')?.querySelector('.dist-percent');
     if(pct){
       const p=saleDistributionEqual ? (100/party) : ((saleDistributionUnits[i]||0)*10);
@@ -11249,7 +11249,7 @@ function toggleSaleDistributionEqual(checked){
       hint.innerHTML='<span class="auto-adjust-arrow">⚖</span><b>동등 분배</b><span>파티 인원 모두가 같은 비율로 정산됩니다.</span>';
     }else if(party===2){
       hint.classList.remove('manual-mode');
-      hint.innerHTML='<span class="auto-adjust-arrow">⇄</span><b>자동 조정</b><span>한 명의 비율을 바꾸면 다른 한 명이 자동 조정되어 합계가 10이 됩니다.</span>';
+      hint.innerHTML='<span class="auto-adjust-arrow">⇄</span><b>자동 조정</b><span>한 명의 비율을 바꾸면 다른 한 명이 자동 조정되어 합계가 10(100%)이 됩니다.</span>';
     }else{
       hint.classList.add('manual-mode');
       hint.innerHTML='<span class="auto-adjust-arrow">✍</span><b>수동 선택</b><span>3인 이상은 각 인원의 비율을 직접 선택해 주세요. 합계는 10/10이어야 저장됩니다.</span>';
@@ -11282,16 +11282,16 @@ function normalizeOtherDistribution(changedIndex, changedValue){
     raw=others.map(()=>remain/others.length);
   }
 
-  const ints=raw.map(v=>Math.floor(v));
-  let left=remain-ints.reduce((a,b)=>a+b,0);
+  const ints=raw.map(v=>Math.floor(v*2));
+  let left=Math.round(remain*2)-ints.reduce((a,b)=>a+b,0);
   const order=raw
-    .map((v,k)=>({k,frac:v-Math.floor(v)}))
+    .map((v,k)=>({k,frac:v*2-Math.floor(v*2)}))
     .sort((a,b)=>b.frac-a.frac || a.k-b.k);
 
   for(let j=0;j<left;j++) ints[order[j%order.length].k]++;
 
   saleDistributionUnits[changedIndex]=fixed;
-  others.forEach((i,k)=>saleDistributionUnits[i]=ints[k]);
+  others.forEach((i,k)=>saleDistributionUnits[i]=ints[k]/2);
 }
 
 function refreshSaleDistributionControls(){
